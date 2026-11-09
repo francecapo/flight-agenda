@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101b2d">
+<title>Flight Log | Agenda operativa</title>
+<style>
+:root{--bg:#f3f5f8;--panel:#fff;--ink:#172235;--muted:#718096;--line:#e5eaf0;--nav:#101b2d;--blue:#2563eb;--blue2:#eaf1ff;--green:#0f8b68;--red:#c24141;--shadow:0 8px 28px rgba(22,34,53,.07);--radius:18px}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+.sidebar{background:var(--nav);color:#fff;padding:26px 16px;display:flex;flex-direction:column;gap:26px}
+.brand{padding:0 12px}.brand small{color:#91a3bd;letter-spacing:.14em;font-size:10px;font-weight:800}.brand h1{font-size:21px;margin:5px 0 0;letter-spacing:-.5px}
+.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#b8c5d8;text-align:left;padding:13px 14px;border-radius:12px;font-weight:650;display:flex;gap:12px;align-items:center}.nav button.active,.nav button:hover{background:#22334d;color:#fff}.nav .ico{width:22px;text-align:center;font-size:17px}
+.side-note{margin-top:auto;padding:13px;color:#91a3bd;font-size:12px;border-top:1px solid #2c3b52}
+main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:26px}.eyebrow{color:var(--blue);font-size:11px;letter-spacing:.13em;font-weight:800;text-transform:uppercase}.top h2{margin:5px 0 4px;font-size:29px;letter-spacing:-.8px}.sub{color:var(--muted);margin:0}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:11px;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:white}.btn.danger{color:var(--red)}.btn.small{padding:7px 10px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px 19px;box-shadow:var(--shadow)}.stat span{color:var(--muted);font-size:12px;font-weight:700}.stat strong{display:block;font-size:27px;margin-top:5px;letter-spacing:-.8px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}.panel-head h3{margin:0;font-size:17px}.filters{display:flex;gap:9px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--line)}input,select,textarea{background:#fff;border:1px solid #dce3eb;border-radius:10px;padding:10px 11px;color:var(--ink);outline:none;min-width:0}input:focus,select:focus,textarea:focus{border-color:#8eafff;box-shadow:0 0 0 3px #eaf1ff}
+.transport-options{display:flex;gap:10px;flex-wrap:wrap}
+.transport-options label{display:flex;align-items:center;gap:7px;border:1px solid #dce3eb;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:650;color:#42516a;cursor:pointer}
+.transport-options input{accent-color:var(--blue);width:16px;height:16px;margin:0}.filters input{flex:1;min-width:170px}.filters select{min-width:145px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;color:var(--muted);font-size:11px;letter-spacing:.07em;text-transform:uppercase;background:#fbfcfd;padding:13px 18px}td{padding:15px 18px;border-top:1px solid var(--line);font-size:14px}tbody tr:hover{background:#fbfcff}.eatc{font-weight:800;letter-spacing:.03em}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:5px 9px;background:var(--blue2);color:#2854a5;font-size:11px;font-weight:800}.pill.nazionale{background:#e8f5ef;color:#137653}.pill.estero{background:#f2eefe;color:#7044a7}.pill.ofcn{background:#fff2e3;color:#a45a13}.pill.addestrativo{background:#eaf1ff;color:#2854a5}.row-actions{display:flex;gap:6px}.iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;color:#526176}.empty{text-align:center;padding:44px 20px;color:var(--muted)}.empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:5px}
+.training-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.training-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.training-card h3{margin:0 0 5px}.training-card .count{color:var(--muted);font-size:12px}.training-card .desc{color:var(--muted);font-size:13px;min-height:20px;margin:12px 0}.training-card .card-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.day-times{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;background:#fbfcfe}.day-times-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.time-slot{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:7px}.time-slot .field{min-width:0}.time-slot .field label{font-size:11px}.time-slot input{width:100%}.record{padding:14px 0;border-top:1px solid var(--line)}.record:first-child{border-top:0}.record-top{display:flex;justify-content:space-between;gap:10px}.record strong{font-size:14px}.record small{color:var(--muted)}.record p{margin:5px 0 0;color:#536176;font-size:13px;white-space:pre-wrap}
+.modal-backdrop{position:fixed;inset:0;background:rgba(9,19,34,.52);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 24px 80px #0003}.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.close{border:0;background:#f1f4f8;border-radius:9px;padding:6px 10px}.form{padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:750;color:#536176}.field input,.field select,.field textarea{width:100%}.form-foot{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;padding-top:6px}.hint{font-size:12px;color:var(--muted);margin:0}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}.section-title h3{margin:0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172235;color:#fff;padding:11px 16px;border-radius:11px;opacity:0;pointer-events:none;transition:.2s;z-index:20}.toast.show{opacity:1}
+@media(max-width:800px){.app{display:block}.sidebar{padding:13px 14px;gap:12px}.brand{padding:0 5px}.brand h1{font-size:18px}.brand small{display:none}.nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;padding:10px 12px;font-size:13px}.side-note{display:none}main{padding:22px 14px 35px}.top{display:block}.top h2{font-size:25px}.actions{margin-top:15px}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:22px}.stat span{font-size:11px}.panel-head{padding:15px}.filters{padding:12px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.form-foot{grid-column:auto}}
+@media(max-width:520px){.time-slot{grid-template-columns:1fr 1fr}.time-slot .remove-slot{grid-column:1/-1;justify-self:end}}
+@media(max-width:420px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.top h2{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><small>AGENDA OPERATIVA</small><h1>✈ Flight Log</h1></div>
+  <nav class="nav">
+    <button class="active" data-page="flights"><span class="ico">▤</span> Registro voli</button>
+    <button data-page="training"><span class="ico">◎</span> Addestramento</button>
+    <button data-page="backup"><span class="ico">⇧</span> Backup</button>
+  </nav>
+  <div class="side-note">I dati restano salvati su questo dispositivo.<br>Esporta periodicamente un backup.</div>
+</aside>
+<main>
+  <section id="flightsPage">
+    <div class="top"><div><div class="eyebrow">Registro personale</div><h2>Agenda voli</h2><p class="sub">Tutti i tuoi voli, ordinati per data.</p></div>
+      <div class="actions"><button class="btn primary" id="addFlight">＋ Nuovo volo</button></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span>VOLI REGISTRATI</span><strong id="totalFlights">0</strong></div>
+      <div class="stat"><span>ORE DI VOLO</span><strong id="totalHours">0h</strong></div>
+      <div class="stat"><span>VOLI QUEST'ANNO</span><strong id="yearFlights">0</strong></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Elenco voli</h3><span class="hint" id="resultCount">0 risultati</span></div>
+      <div class="filters">
+        <input id="searchFlight" placeholder="Cerca EATC o tipologia…">
+        <select id="filterType"><option value="">Tutte le tipologie</option><option>Addestrativo</option><option>Nazionale</option><option>Estero</option><option>OFCN</option></select>
+        <select id="filterTransport"><option value="">Tutti i trasporti</option><option>Log Pax</option><option>Log Pall</option><option>Log Wheel</option></select>
+        <input id="filterYear" type="number" placeholder="Anno" min="2000" max="2100" style="max-width:110px">
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>EATC</th><th>Paese</th><th>Tipologia</th><th>Data</th><th>Orario</th><th>Trasporto</th><th></th></tr></thead><tbody id="flightRows"></tbody></table></div>
+      <div class="empty" id="flightEmpty"><strong>Nessun volo registrato</strong>Inserisci il primo volo con il pulsante “Nuovo volo”.</div>
+    </div>
+  </section>
+  <section id="trainingPage" hidden>
+    <div class="top"><div><div class="eyebrow">Percorso professionale</div><h2>Addestramento</h2><p class="sub">Organizza i voli per corsi, fasi e sezioni di addestramento.</p></div>
+      <div class="actions"><button class="btn primary" id="addSection">＋ Nuova sezione</button></div>
+    </div>
+    <div class="section-title"><h3>Le tue sezioni</h3><span class="hint">Puoi rinominarle e aggiungerne altre</span></div>
+    <div class="training-grid" id="trainingGrid"></div>
+    <div class="empty" id="trainingEmpty" hidden><strong>Nessuna sezione presente</strong>Crea una sezione per iniziare a organizzare l'addestramento.</div>
+  </section>
+  <section id="backupPage" hidden>
+    <div class="top"><div><div class="eyebrow">Gestione dati</div><h2>Backup</h2><p class="sub">Esporta una copia dei tuoi dati o ripristina un backup precedente.</p></div></div>
+    <div class="training-grid">
+      <article class="training-card"><div style="font-size:25px">⬇</div><h3>Esporta backup</h3><p class="desc">Scarica un file JSON con tutti i voli e le sezioni di addestramento.</p><button class="btn primary" id="exportBackup">Esporta backup completo</button></article>
+      <article class="training-card"><div style="font-size:25px">⬆</div><h3>Importa backup</h3><p class="desc">Ripristina i dati da un file JSON esportato in precedenza. I dati attualmente presenti verranno sostituiti.</p><button class="btn" id="importBackup">Seleziona file da importare</button><input id="backupFile" type="file" accept="application/json,.json" hidden></article>
+      <article class="training-card"><div style="font-size:25px">▦</div><h3>Esporta registro voli CSV</h3><p class="desc">Scarica il registro dei voli in formato CSV, compatibile con Excel e fogli di calcolo. Include EATC, tipologia, data, orari, trasporto e note.</p><button class="btn" id="exportCsv">Esporta CSV</button></article>
+    </div>
+    <div class="panel" style="margin-top:16px"><div class="panel-head"><h3>Informazioni importanti</h3></div><div style="padding:18px 20px;color:#536176;font-size:14px"><p style="margin-top:0">I dati vengono salvati automaticamente nel browser e sul dispositivo che stai usando. Non vengono sincronizzati con altri dispositivi.</p><p style="margin-bottom:0">Ti consigliamo di esportare regolarmente un backup e conservarlo in un luogo sicuro. L'importazione sostituisce integralmente i dati presenti nell'app.</p></div></div>
+  </section>
+</main>
+</div>
+
+<div class="modal-backdrop" id="flightModal"><div class="modal">
+  <div class="modal-head"><h3 id="flightModalTitle">Nuovo volo</h3><button class="close" data-close="flightModal">✕</button></div>
+  <form class="form" id="flightForm">
+    <input type="hidden" id="flightId"><input type="hidden" id="flightSectionId">
+    <div class="field"><label for="eatc">EATC</label><input id="eatc" required maxlength="30" placeholder="Es. 11399"></div>
+    <div class="field"><label for="country">Paese</label><input id="country" maxlength="60" placeholder="Es. Bulgaria, Lituania…"></div>
+    <div class="field"><label for="flightType">Tipologia volo</label><select id="flightType" required><option value="">Seleziona…</option><option>Addestrativo</option><option>Nazionale</option><option>Estero</option><option>OFCN</option></select></div>
+    <div class="field"><label for="flightDate">Dal giorno</label><input id="flightDate" type="date" required></div>
+    <div class="field"><label for="flightEndDate">Al giorno</label><input id="flightEndDate" type="date" required></div>
+    <div class="field full" id="transportField" hidden><label>Tipologia di trasporto</label>
+      <div class="transport-options">
+        <label><input type="checkbox" name="transport" value="Log Pax"> Log Pax</label>
+        <label><input type="checkbox" name="transport" value="Log Pall"> Log Pall</label>
+        <label><input type="checkbox" name="transport" value="Log Wheel"> Log Wheel</label>
+      </div>
+    </div>
+    <div class="field full"><label>Orari giornalieri</label><p class="hint">Inserisci una o più fasce per ogni giornata. Le ore totali verranno sommate senza considerare gli intervalli tra un giorno e l’altro.</p><div id="dailyTimes"></div></div>
+    <div class="field full"><label for="flightNotes">Note (facoltative)</label><textarea id="flightNotes" rows="2" placeholder="Eventuali annotazioni…"></textarea></div>
+    <div class="form-foot"><button type="button" class="btn" data-close="flightModal">Annulla</button><button class="btn primary" type="submit">Salva volo</button></div>
+  </form>
+</div></div>
+
+<div class="modal-backdrop" id="sectionModal"><div class="modal">
+  <div class="modal-head"><h3 id="sectionModalTitle">Nuova sezione</h3><button class="close" data-close="sectionModal">✕</button></div>
+  <form class="form" id="sectionForm">
+    <input type="hidden" id="sectionId">
+    <div class="field full"><label for="sectionName">Nome sezione</label><input id="sectionName" required maxlength="50" placeholder="Es. Ab initio"></div>
+    <div class="field full"><label for="sectionDescription">Descrizione (facoltativa)</label><input id="sectionDescription" maxlength="120" placeholder="Es. Fase iniziale"></div>
+    <div class="form-foot"><button type="button" class="btn" data-close="sectionModal">Annulla</button><button class="btn primary" type="submit">Salva sezione</button></div>
+  </form>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='flightlog_agenda_v1';
+const defaults=[
+ {id:uid(),name:'Ab initio',description:'',records:[]},
+ {id:uid(),name:'Pronto impiego',description:'',records:[]},
+ {id:uid(),name:'LCR',description:'',records:[]}
+];
+let state=load();
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));return x&&Array.isArray(x.flights)&&Array.isArray(x.sections)?x:{flights:[],sections:defaults}}catch{return{flights:[],sections:defaults}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateIT(s){if(!s)return '';const [y,m,d]=s.split('-');return `${d}/${m}/${y}`}
+function slotMinutes(slot){if(!slot.start||!slot.end)return 0;let a=slot.start.split(':').map(Number),b=slot.end.split(':').map(Number);let mins=(b[0]*60+b[1])-(a[0]*60+a[1]);if(mins<0)mins+=1440;return mins}
+function flightSlots(f){if(Array.isArray(f.dailyTimes))return f.dailyTimes.flatMap(day=>(day.slots||[]).map(slot=>({...slot,date:day.date})));return f.start&&f.end?[{date:f.date,start:f.start,end:f.end}]:[]}
+function duration(f){const slots=flightSlots(f);return slots.reduce((sum,slot)=>sum+slotMinutes(slot),0)}
+function timesLabel(f){const slots=flightSlots(f);if(!slots.length)return '—';const grouped={};slots.forEach(x=>(grouped[x.date]??=[]).push(`${x.start}–${x.end}`));return Object.entries(grouped).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v])=>`${dateIT(d)}: ${v.join(', ')}`).join(' · ')}
+function hoursLabel(min){return `${Math.floor(min/60)}h${String(min%60).padStart(2,'0')}`}
+function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function openModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+document.querySelectorAll('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['flights','training','backup'].forEach(page=>document.getElementById(page+'Page').hidden=b.dataset.page!==page)});
+function sectionName(id){return state.sections.find(s=>s.id===id)?.name||''}
+function renderFlights(){
+ const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
+ const list=[...state.flights].sort((a,b)=>b.date.localeCompare(a.date)||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||f.eatc.toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||f.type.toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||f.date.startsWith(yr)||(f.endDate||f.date).startsWith(yr)));
+ document.getElementById('flightRows').innerHTML=list.map(f=>`<tr><td class="eatc">${esc(f.eatc)}</td><td>${esc(f.country||"—")}</td><td><span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td>${dateIT(f.date)}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</td><td style="white-space:normal;min-width:190px">${esc(timesLabel(f))}</td><td>${esc((Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", ")||"—")}</td><td><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`).join('');
+ document.getElementById('flightEmpty').style.display=list.length?'none':'block';document.getElementById('resultCount').textContent=`${list.length} ${list.length===1?'risultato':'risultati'}`;
+ const total=state.flights.reduce((s,f)=>s+duration(f),0),year=new Date().getFullYear();
+ document.getElementById('totalFlights').textContent=state.flights.length;document.getElementById('totalHours').textContent=hoursLabel(total);document.getElementById('yearFlights').textContent=state.flights.filter(f=>f.date.startsWith(year)).length;
+}
+['searchFlight','filterType','filterTransport','filterYear'].forEach(id=>document.getElementById(id).addEventListener('input',renderFlights));
+function selectedTransports(){return [...document.querySelectorAll('input[name="transport"]:checked')].map(x=>x.value)}
+function setTransports(values){const chosen=Array.isArray(values)?values:(values?[values]:[]);document.querySelectorAll('input[name="transport"]').forEach(x=>x.checked=chosen.includes(x.value))}
+function toggleTransportField(){const type=document.getElementById('flightType').value;const show=['Nazionale','Estero','OFCN'].includes(type);document.getElementById('transportField').hidden=!show;if(!show)setTransports([])}
+document.getElementById('flightType').addEventListener('change',toggleTransportField);
+function dateRange(start,end){const out=[];if(!start||!end||end<start)return out;let d=new Date(start+'T12:00:00'),last=new Date(end+'T12:00:00');while(d<=last&&out.length<366){out.push(d.toISOString().slice(0,10));d.setDate(d.getDate()+1)}return out}
+function renderDailyTimes(existing=[]){const host=document.getElementById('dailyTimes'),start=document.getElementById('flightDate').value,end=document.getElementById('flightEndDate').value;const old={};existing.forEach(day=>old[day.date]=day.slots||[]);host.innerHTML=dateRange(start,end).map(date=>{const slots=old[date]?.length?old[date]:[{start:'',end:''}];return `<div class="day-times" data-day="${date}"><div class="day-times-head"><strong>${dateIT(date)}</strong><button type="button" class="btn small add-slot" data-date="${date}">＋ Aggiungi fascia</button></div><div class="slots">${slots.map((slot,i)=>slotMarkup(date,slot,i)).join('')}</div></div>`}).join('');host.querySelectorAll('.add-slot').forEach(btn=>btn.onclick=()=>{const day=host.querySelector(`[data-day="${btn.dataset.date}"] .slots`);day.insertAdjacentHTML('beforeend',slotMarkup(btn.dataset.date,{start:'',end:''},day.children.length));bindSlotButtons(day)});bindSlotButtons(host)}
+function slotMarkup(date,slot,index){return `<div class="time-slot"><div class="field"><label>Inizio ${index+1}</label><input type="time" data-date="${date}" data-part="start" value="${esc(slot.start||'')}" required></div><div class="field"><label>Fine ${index+1}</label><input type="time" data-date="${date}" data-part="end" value="${esc(slot.end||'')}" required></div>${index?'<button type="button" class="btn small danger remove-slot">Rimuovi</button>':'<span></span>'}</div>`}
+function bindSlotButtons(root){root.querySelectorAll('.remove-slot').forEach(btn=>btn.onclick=()=>{btn.closest('.time-slot').remove();const day=btn.closest('.day-times');day.querySelectorAll('.time-slot').forEach((row,i)=>{row.querySelectorAll('label').forEach((label,j)=>label.textContent=(j?'Fine ':'Inizio ')+(i+1))})})}
+function collectDailyTimes(){return [...document.querySelectorAll('#dailyTimes .day-times')].map(day=>({date:day.dataset.day,slots:[...day.querySelectorAll('.time-slot')].map(row=>({start:row.querySelector('[data-part="start"]').value,end:row.querySelector('[data-part="end"]').value}))}))}
+document.getElementById('addFlight').onclick=()=>{document.getElementById('flightForm').reset();document.getElementById('flightId').value='';document.getElementById('flightSectionId').value='';setTransports([]);toggleTransportField();document.getElementById('flightModalTitle').textContent='Nuovo volo';const today=new Date().toISOString().slice(0,10);document.getElementById('flightDate').value=today;document.getElementById('flightEndDate').value=today;renderDailyTimes();openModal('flightModal')};
+function editFlight(id){const f=state.flights.find(x=>x.id===id);if(!f)return;document.getElementById('flightSectionId').value=f.sectionId||'';for(const [k,v] of Object.entries({flightId:f.id,eatc:f.eatc,country:f.country||"",flightType:f.type,flightDate:f.date,flightEndDate:f.endDate||f.date,flightNotes:f.notes||''}))document.getElementById(k).value=v;toggleTransportField();setTransports(f.transport);let days=f.dailyTimes;if(!Array.isArray(days)){days=[{date:f.date,slots:f.start&&f.end?[{start:f.start,end:f.end}]:[{start:'',end:''}]}]}renderDailyTimes(days);document.getElementById('flightModalTitle').textContent=f.sectionId?`Modifica volo · ${sectionName(f.sectionId)}`:'Modifica volo';openModal('flightModal')}
+function addTrainingFlight(sectionId){document.getElementById('flightForm').reset();document.getElementById('flightId').value='';document.getElementById('flightSectionId').value=sectionId;setTransports([]);toggleTransportField();document.getElementById('flightModalTitle').textContent=`Nuovo volo · ${sectionName(sectionId)}`;const today=new Date().toISOString().slice(0,10);document.getElementById('flightDate').value=today;document.getElementById('flightEndDate').value=today;renderDailyTimes();openModal('flightModal')}
+function deleteFlight(id){if(!confirm('Eliminare questo volo?'))return;state.flights=state.flights.filter(f=>f.id!==id);save();renderFlights();renderTraining();toast('Volo eliminato')}
+document.getElementById('flightDate').addEventListener('change',()=>{const start=document.getElementById('flightDate').value,end=document.getElementById('flightEndDate');if(!end.value||end.value<start)end.value=start;renderDailyTimes(collectDailyTimes())});
+document.getElementById('flightEndDate').addEventListener('change',()=>{const start=document.getElementById('flightDate').value,end=document.getElementById('flightEndDate');if(start&&end.value<start)end.value=start;renderDailyTimes(collectDailyTimes())});
+document.getElementById('flightForm').onsubmit=e=>{e.preventDefault();const id=document.getElementById('flightId').value,startDate=document.getElementById('flightDate').value,endDate=document.getElementById('flightEndDate').value;if(endDate<startDate){alert('La data finale non può precedere quella iniziale.');return}const dailyTimes=collectDailyTimes();if(!dailyTimes.length||dailyTimes.some(day=>!day.slots.length||day.slots.some(slot=>!slot.start||!slot.end))){alert('Inserisci almeno una fascia oraria completa per ogni giornata.');return}const f={id:id||uid(),eatc:document.getElementById('eatc').value.trim(),country:document.getElementById('country').value.trim(),type:document.getElementById('flightType').value,date:startDate,endDate,transport:selectedTransports(),dailyTimes,sectionId:document.getElementById('flightSectionId').value||null,notes:document.getElementById('flightNotes').value.trim()};if(id)state.flights=state.flights.map(x=>x.id===id?f:x);else state.flights.push(f);save();renderFlights();renderTraining();closeModal('flightModal');toast(id?'Volo aggiornato':'Volo salvato')};
+function renderTraining(){
+ const grid=document.getElementById('trainingGrid');grid.innerHTML=state.sections.map(s=>{const linked=[...state.flights].filter(f=>f.sectionId===s.id).sort((a,b)=>b.date.localeCompare(a.date));return `<article class="training-card"><div class="record-top"><div><h3>${esc(s.name)}</h3><div class="count">${linked.length} ${linked.length===1?'volo':'voli'}</div></div><button class="iconbtn" title="Modifica sezione" onclick="editSection('${s.id}')">✎</button></div><div class="desc">${esc(s.description||'Nessuna descrizione')}</div>${linked.length?`<div class="section-title"><h3>Voli registrati</h3></div>${linked.map(f=>`<div class="record"><div class="record-top"><strong>${esc(f.eatc)} · ${esc(f.type)}</strong><small>${dateIT(f.date)}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</small></div><p>${esc(f.country||'')}${f.country?' · ':''}${esc(timesLabel(f))}</p><div style="margin-top:7px"><button class="iconbtn" onclick="editFlight('${f.id}')">Modifica</button> <button class="iconbtn" onclick="deleteFlight('${f.id}')">Elimina</button></div></div>`).join('')}`:''}<div>${[...s.records].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3).map(r=>`<div class="record"><div class="record-top"><strong>${esc(r.title)}</strong><small>${dateIT(r.date)}</small></div>${r.notes?`<p>${esc(r.notes)}</p>`:''}<div style="margin-top:7px"><button class="iconbtn" onclick="editRecord('${s.id}','${r.id}')">Modifica</button> <button class="iconbtn" onclick="deleteRecord('${s.id}','${r.id}')">Elimina</button></div></div>`).join('')}</div><div class="card-actions"><button class="btn primary small" onclick="addTrainingFlight('${s.id}')">＋ Registra volo</button><button class="btn small danger" onclick="deleteSection('${s.id}')">Elimina sezione</button></div></article>`}).join('');
+ document.getElementById('trainingEmpty').hidden=state.sections.length>0;
+}
+document.getElementById('addSection').onclick=()=>{document.getElementById('sectionForm').reset();document.getElementById('sectionId').value='';document.getElementById('sectionModalTitle').textContent='Nuova sezione';openModal('sectionModal')};
+function editSection(id){const s=state.sections.find(x=>x.id===id);if(!s)return;document.getElementById('sectionId').value=id;document.getElementById('sectionName').value=s.name;document.getElementById('sectionDescription').value=s.description||'';document.getElementById('sectionModalTitle').textContent='Modifica sezione';openModal('sectionModal')}
+function deleteSection(id){const s=state.sections.find(x=>x.id===id);if(!s)return;if(!confirm(`Eliminare la sezione "${s.name}" e le sue attività? I voli resteranno nel Registro voli, ma non saranno più collegati a questa sezione.`))return;state.sections=state.sections.filter(x=>x.id!==id);state.flights.forEach(f=>{if(f.sectionId===id)f.sectionId=null});save();renderFlights();renderTraining();toast('Sezione eliminata')}
+document.getElementById('sectionForm').onsubmit=e=>{e.preventDefault();const id=document.getElementById('sectionId').value,name=document.getElementById('sectionName').value.trim(),description=document.getElementById('sectionDescription').value.trim();if(id){const s=state.sections.find(x=>x.id===id);s.name=name;s.description=description}else state.sections.push({id:uid(),name,description,records:[]});save();renderTraining();closeModal('sectionModal');toast(id?'Sezione aggiornata':'Sezione creata')};
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+document.getElementById('exportBackup').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='flight-log-backup.json';a.click();URL.revokeObjectURL(a.href);toast('Backup completo esportato')};
+document.getElementById('importBackup').onclick=()=>document.getElementById('backupFile').click();
+document.getElementById('backupFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!data||!Array.isArray(data.flights)||!Array.isArray(data.sections))throw new Error('Formato non valido');if(!confirm('Importare il backup? I dati attuali verranno sostituiti.'))return;state={flights:data.flights,sections:data.sections};save();renderFlights();renderTraining();toast('Backup importato')}catch(err){alert('Impossibile importare: file non valido.')}finally{e.target.value=''}};
+document.getElementById('exportCsv').onclick=()=>{if(!state.flights.length){toast('Non ci sono voli da esportare');return}const rows=[['EATC','Paese','Tipologia','Dal giorno','Al giorno','Fasce orarie per giornata','Trasporto','Note'],...state.flights.map(f=>[f.eatc,f.country||'',f.type,dateIT(f.date),dateIT(f.endDate||f.date),timesLabel(f),(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(', '),f.notes])];const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='registro-voli.csv';a.click();URL.revokeObjectURL(a.href)};
+renderFlights();renderTraining();
+</script>
+</body></html>
