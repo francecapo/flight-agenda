@@ -96,6 +96,17 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
     margin:0 !important;
   }
 }
+
+.agenda-heading{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.agenda-heading h2{margin:5px 0 4px}
+.flight-alert{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;line-height:1.25;border:1px solid transparent}
+.flight-alert:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:0 0 8px}
+.flight-alert.green{background:#e7f7ef;color:#137a4c;border-color:#bce8cf}
+.flight-alert.orange{background:#fff3df;color:#a45a08;border-color:#f5d39e}
+.flight-alert.red{background:#fdeaea;color:#b42323;border-color:#f4c1c1}
+.flight-alert.neutral{background:#eef1f5;color:#657184;border-color:#dce2ea}
+@media(max-width:800px){.agenda-heading{gap:8px}.flight-alert{font-size:11px;padding:7px 9px}}
+
 </style>
 </head>
 <body>
@@ -111,7 +122,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 </aside>
 <main>
   <section id="flightsPage">
-    <div class="top"><div><div class="eyebrow">Registro personale</div><h2>Agenda voli</h2><p class="sub">Tutti i tuoi voli, ordinati per data.</p></div>
+    <div class="top"><div><div class="eyebrow">Registro personale</div><div class="agenda-heading"><h2>Agenda voli</h2><span id="flightAlert" class="flight-alert" role="status" aria-live="polite"></span></div><p class="sub">Tutti i tuoi voli, ordinati per data.</p></div>
       <div class="actions"><button class="btn primary" id="addFlight">＋ Nuovo volo</button></div>
     </div>
     <div class="stats">
@@ -208,7 +219,32 @@ document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.
 document.querySelectorAll('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['flights','training','backup'].forEach(page=>document.getElementById(page+'Page').hidden=b.dataset.page!==page)});
 function sectionName(id){return state.sections.find(s=>s.id===id)?.name||''}
+
+function localDateOnly(date=new Date()){return new Date(date.getFullYear(),date.getMonth(),date.getDate())}
+function dateDifferenceDays(from,to){return Math.floor((localDateOnly(to)-localDateOnly(from))/86400000)}
+function renderFlightAlert(){
+ const alert=document.getElementById('flightAlert');
+ const dated=state.flights.map(f=>f.endDate||f.date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(String(d||''))).sort();
+ if(!dated.length){alert.className='flight-alert neutral';alert.textContent='Nessun volo con data';return}
+ const last=dated[dated.length-1];
+ const [y,m,d]=last.split('-').map(Number);
+ const lastDate=new Date(y,m-1,d);
+ const days=dateDifferenceDays(lastDate,new Date());
+ if(days<0){alert.className='flight-alert neutral';alert.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'}`;return}
+ if(days>30){
+   alert.className='flight-alert red';
+   alert.textContent=`Scadenza superata da ${days-30} ${days-30===1?'giorno':'giorni'}`;
+ }else if(days>=23){
+   alert.className='flight-alert orange';
+   alert.textContent=days===30?'Scadenza oggi':`Scadenza tra ${30-days} ${30-days===1?'giorno':'giorni'}`;
+ }else{
+   alert.className='flight-alert green';
+   alert.textContent=`In regola · ${30-days} giorni alla scadenza`;
+ }
+}
+
 function renderFlights(){
+ renderFlightAlert();
  const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
  const list=[...state.flights].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||String(f.eatc||'').toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||String(f.type||'').toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||String(f.date||'').startsWith(yr)||String(f.endDate||f.date||'').startsWith(yr)));
  document.getElementById('flightRows').innerHTML=list.map(f=>`<tr><td class="eatc" data-label="EATC">${esc(f.eatc||"—")}</td><td data-label="Paese">${esc(f.country||"—")}</td><td data-label="Tipologia"><span class="pill ${(f.type||"").toLowerCase()}">${esc(f.type)}</span>${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td data-label="Date">${dateIT(f.date)||"—"}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</td><td data-label="Orari" style="white-space:normal;min-width:190px">${esc(timesLabel(f))}</td><td data-label="Trasporto">${esc((Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", ")||"—")}</td><td data-label="Azioni"><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`).join('');
