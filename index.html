@@ -279,6 +279,93 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Layout definitivo del modulo volo su smartphone */
+@media(max-width:800px){
+  #flightModal #flightForm{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    column-gap:10px !important;
+    row-gap:12px !important;
+  }
+  #flightModal #flightForm > .field{
+    grid-column:1/-1 !important;
+    width:100% !important;
+    min-width:0 !important;
+  }
+  #flightModal #flightForm > .field:has(#flightDate),
+  #flightModal #flightForm > .field:has(#flightEndDate){
+    grid-column:span 1 !important;
+  }
+  #flightModal #flightDate,
+  #flightModal #flightEndDate{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    height:46px !important;
+    min-height:46px !important;
+    padding:6px 7px !important;
+    font-size:14px !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal #dailyTimes,
+  #flightModal .day-times,
+  #flightModal .slots,
+  #flightModal .time-slot,
+  #flightModal .time-slot .field{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal .day-times{
+    padding:9px !important;
+    overflow:hidden !important;
+  }
+  #flightModal .day-times-head strong{
+    font-size:15px !important;
+  }
+  #flightModal .day-times-head .add-slot{
+    min-height:34px !important;
+    padding:6px 8px !important;
+    font-size:11px !important;
+  }
+  #flightModal .time-slot{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:10px !important;
+    align-items:start !important;
+    margin-top:7px !important;
+    padding:0 !important;
+  }
+  #flightModal .time-slot .field{
+    display:block !important;
+    flex:none !important;
+    margin:0 !important;
+  }
+  #flightModal .time-slot .field label{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 0 5px !important;
+    font-size:12px !important;
+    line-height:1.2 !important;
+    white-space:nowrap !important;
+  }
+  #flightModal .time-slot input[type="time"]{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    height:44px !important;
+    min-height:44px !important;
+    margin:0 !important;
+    padding:6px 3px !important;
+    box-sizing:border-box !important;
+    font-size:14px !important;
+  }
+  #flightModal .time-slot > span{display:none !important}
+}
+
 </style>
 </head>
 <body>
