@@ -29,9 +29,45 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 .modal-backdrop{position:fixed;inset:0;background:rgba(9,19,34,.52);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.modal-backdrop.show{display:flex}.modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 24px 80px #0003}.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.close{border:0;background:#f1f4f8;border-radius:9px;padding:6px 10px}.form{padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:750;color:#536176}.field input,.field select,.field textarea{width:100%}.form-foot{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;padding-top:6px}.hint{font-size:12px;color:var(--muted);margin:0}
 .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}.section-title h3{margin:0}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172235;color:#fff;padding:11px 16px;border-radius:11px;opacity:0;pointer-events:none;transition:.2s;z-index:20}.toast.show{opacity:1}
-@media(max-width:800px){.app{display:block}.sidebar{padding:13px 14px;gap:12px}.brand{padding:0 5px}.brand h1{font-size:18px}.brand small{display:none}.nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;padding:10px 12px;font-size:13px}.side-note{display:none}main{padding:22px 14px 35px}.top{display:block}.top h2{font-size:25px}.actions{margin-top:15px}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:22px}.stat span{font-size:11px}.panel-head{padding:15px}.filters{padding:12px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.form-foot{grid-column:auto}}
-@media(max-width:520px){.time-slot{grid-template-columns:1fr 1fr}.time-slot .remove-slot{grid-column:1/-1;justify-self:end}}
-@media(max-width:420px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.top h2{font-size:23px}}
+@media(max-width:800px){
+ .app{display:block}
+ .sidebar{position:sticky;top:0;z-index:8;padding:9px 12px 8px;gap:7px;box-shadow:0 4px 14px rgba(16,27,45,.16)}
+ .brand{padding:0 4px}.brand h1{font-size:17px;margin:0}.brand small,.side-note{display:none}
+ .nav{display:flex;overflow-x:auto;gap:5px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}
+ .nav button{white-space:nowrap;flex:0 0 auto;padding:9px 11px;font-size:12px;gap:7px;border-radius:9px}
+ main{padding:17px 12px 32px}
+ .top{display:flex;flex-direction:column;gap:10px;margin-bottom:17px}.top h2{font-size:24px}.sub{font-size:13px}
+ .actions{margin-top:2px;width:100%}.actions .btn{flex:1}
+ .stats{gap:8px;margin-bottom:14px}.stat{padding:11px 12px;border-radius:13px}.stat strong{font-size:21px}.stat span{font-size:10px}
+ .panel{border-radius:14px}.panel-head{padding:13px 12px;align-items:flex-start}.panel-head h3{font-size:15px}
+ .filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}.filters input{grid-column:1/-1;min-width:0;width:100%}.filters select{min-width:0;width:100%}
+ .table-wrap{overflow:visible;padding:0 9px 9px}
+ table,tbody{display:block;width:100%;white-space:normal}thead{display:none}
+ tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:9px 0;padding:8px 11px;box-shadow:0 3px 12px rgba(22,34,53,.04)}
+ tbody td{display:block;padding:7px 0;border:0;min-width:0;font-size:13px;white-space:normal;overflow-wrap:anywhere}
+ tbody td:before{content:attr(data-label);display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+ tbody td[data-label="EATC"]{font-size:15px;font-weight:800}
+ tbody td[data-label="Orari"]{min-width:0}
+ tbody td[data-label="Azioni"]{grid-column:1/-1;border-top:1px solid var(--line);margin-top:3px;padding-top:8px}
+ .row-actions{gap:8px}.iconbtn{padding:8px 12px;min-height:36px}
+ .training-grid{grid-template-columns:1fr;gap:10px}.training-card{padding:14px;border-radius:14px}
+ .training-card .card-actions .btn{flex:1}
+ .form{grid-template-columns:1fr;padding:15px 13px;gap:12px}.field.full{grid-column:auto}.form-foot{grid-column:auto;position:sticky;bottom:0;background:#fff;padding:10px 0 max(8px,env(safe-area-inset-bottom));z-index:2}
+ .modal-backdrop{align-items:flex-end;padding:0}.modal{width:100%;max-height:94dvh;border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+ .modal-head{padding:15px 15px}.modal-head h3{font-size:17px}
+ input,select,textarea{font-size:16px;padding:11px 12px;min-height:44px}
+ .transport-options{display:grid;grid-template-columns:1fr 1fr;gap:7px}.transport-options label{padding:10px;font-size:12px}
+ .day-times{padding:10px}.day-times-head{align-items:flex-start}.day-times-head .btn{padding:8px;font-size:12px}
+ .time-slot{grid-template-columns:1fr 1fr;gap:7px}.time-slot .remove-slot{grid-column:1/-1;justify-self:end}
+ .section-title{align-items:flex-start}
+ .toast{bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 24px);text-align:center}
+}
+@media(max-width:420px){
+ .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}
+ .top h2{font-size:22px}.nav button{padding:8px 9px;font-size:11px}
+ tbody tr{grid-template-columns:1fr 1fr;gap:0 9px}
+}
+@media(min-width:801px) and (max-width:1100px){main{padding:24px 22px}.app{grid-template-columns:210px 1fr}.form{gap:11px}}
 </style>
 </head>
 <body>
@@ -147,7 +183,7 @@ function sectionName(id){return state.sections.find(s=>s.id===id)?.name||''}
 function renderFlights(){
  const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
  const list=[...state.flights].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||String(f.eatc||'').toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||String(f.type||'').toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||String(f.date||'').startsWith(yr)||String(f.endDate||f.date||'').startsWith(yr)));
- document.getElementById('flightRows').innerHTML=list.map(f=>`<tr><td class="eatc">${esc(f.eatc)}</td><td>${esc(f.country||"—")}</td><td><span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td>${dateIT(f.date)}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</td><td style="white-space:normal;min-width:190px">${esc(timesLabel(f))}</td><td>${esc((Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", ")||"—")}</td><td><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`).join('');
+ document.getElementById('flightRows').innerHTML=list.map(f=>`<tr><td class="eatc" data-label="EATC">${esc(f.eatc||"—")}</td><td data-label="Paese">${esc(f.country||"—")}</td><td data-label="Tipologia"><span class="pill ${(f.type||"").toLowerCase()}">${esc(f.type)}</span>${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td data-label="Date">${dateIT(f.date)||"—"}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</td><td data-label="Orari" style="white-space:normal;min-width:190px">${esc(timesLabel(f))}</td><td data-label="Trasporto">${esc((Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", ")||"—")}</td><td data-label="Azioni"><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`).join('');
  document.getElementById('flightEmpty').style.display=list.length?'none':'block';document.getElementById('resultCount').textContent=`${list.length} ${list.length===1?'risultato':'risultati'}`;
  const total=state.flights.reduce((s,f)=>s+duration(f),0),year=new Date().getFullYear();
  document.getElementById('totalFlights').textContent=state.flights.length;document.getElementById('totalHours').textContent=hoursLabel(total);document.getElementById('yearFlights').textContent=state.flights.filter(f=>String(f.date||'').startsWith(String(year))).length;
