@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#101b2d">
-<meta name="flightlog-build" content="20261109-2215">
 <title>Flight Log | Agenda operativa</title>
 <style>
 :root{--bg:#f3f5f8;--panel:#fff;--ink:#172235;--muted:#718096;--line:#e5eaf0;--nav:#101b2d;--blue:#2563eb;--blue2:#eaf1ff;--green:#0f8b68;--red:#c24141;--shadow:0 8px 28px rgba(22,34,53,.07);--radius:18px}
@@ -114,34 +113,105 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 }
 
 
-/* Modulo Nuovo volo: layout mobile */
+/* Modulo nuovo/modifica volo: contenuto sempre entro la larghezza del telefono */
 @media(max-width:800px){
- #flightModal.modal-backdrop{align-items:flex-end!important;justify-content:center!important;padding:0!important;overflow:hidden!important}
- #flightModal .modal{display:flex!important;flex-direction:column!important;width:100%!important;max-width:none!important;height:auto!important;max-height:calc(100dvh - env(safe-area-inset-top))!important;margin:0!important;border-radius:20px 20px 0 0!important;overflow:hidden!important}
- #flightModal .modal-head{flex:0 0 auto!important;padding:14px 16px!important;min-height:64px}
- #flightModal .modal-head h3{font-size:19px!important}
- #flightModal .close{min-width:42px;min-height:42px;font-size:18px}
- #flightModal #flightForm{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;padding:14px 16px calc(12px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;min-height:0!important}
- #flightModal #flightForm>.field,#flightModal #flightForm>.field.full{grid-column:1!important;min-width:0!important;width:100%!important}
- #flightModal #flightForm .field input,#flightModal #flightForm .field select,#flightModal #flightForm .field textarea{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;font-size:16px!important;min-height:48px}
- #flightModal #dailyTimes{min-width:0;width:100%}
- #flightModal .day-times{box-sizing:border-box;width:100%;padding:11px;overflow:hidden}
- #flightModal .day-times-head{align-items:center;flex-wrap:wrap;gap:8px}
- #flightModal .day-times-head strong{font-size:15px}
- #flightModal .day-times-head .btn{padding:9px 11px;font-size:13px}
- #flightModal .time-slot{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;width:100%;min-width:0;align-items:end}
- #flightModal .time-slot .field{min-width:0!important;width:100%}
- #flightModal .time-slot .field input{width:100%!important;min-width:0!important;box-sizing:border-box!important}
- #flightModal .time-slot .remove-slot{grid-column:1/-1!important;justify-self:end!important;min-height:38px;padding:7px 12px}
- #flightModal .transport-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- #flightModal .transport-options label{min-width:0;display:flex;align-items:center;gap:7px;padding:10px;border:1px solid var(--line);border-radius:10px}
- #flightModal .form-foot{position:sticky!important;bottom:calc(-12px - env(safe-area-inset-bottom))!important;z-index:3;grid-column:1!important;display:flex!important;justify-content:stretch!important;gap:8px!important;margin:4px -16px calc(-12px - env(safe-area-inset-bottom))!important;padding:11px 16px calc(12px + env(safe-area-inset-bottom))!important;background:rgba(255,255,255,.97);border-top:1px solid var(--line)}
- #flightModal .form-foot .btn{flex:1;min-height:48px}
+  #flightModal .modal{
+    width:100% !important;
+    max-width:100vw !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+  }
+  #flightModal .modal-head,
+  #flightModal #flightForm{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal #flightForm{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    padding:14px 12px calc(14px + env(safe-area-inset-bottom)) !important;
+    gap:12px !important;
+    overflow-x:hidden !important;
+  }
+  #flightModal #flightForm > *,
+  #flightModal #flightForm .field,
+  #flightModal #flightForm .field.full,
+  #flightModal #dailyTimes,
+  #flightModal .day-times,
+  #flightModal .slots,
+  #flightModal .time-slot{
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal #flightForm input:not([type="checkbox"]),
+  #flightModal #flightForm select,
+  #flightModal #flightForm textarea{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal .day-times{
+    padding:9px !important;
+    overflow:hidden !important;
+  }
+  #flightModal .day-times-head{
+    flex-wrap:wrap !important;
+    min-width:0 !important;
+  }
+  #flightModal .day-times-head strong{
+    min-width:0 !important;
+  }
+  #flightModal .time-slot{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+  #flightModal .time-slot .field{
+    min-width:0 !important;
+    width:100% !important;
+  }
+  #flightModal .time-slot input[type="time"]{
+    width:100% !important;
+    min-width:0 !important;
+    padding:10px 6px !important;
+  }
+  #flightModal .time-slot .remove-slot{
+    grid-column:1/-1 !important;
+    justify-self:end !important;
+  }
+  #flightModal .transport-options{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    min-width:0 !important;
+  }
+  #flightModal .transport-options label{
+    min-width:0 !important;
+    overflow-wrap:anywhere !important;
+  }
+  #flightModal .form-foot{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:stretch !important;
+    width:100% !important;
+    min-width:0 !important;
+    position:sticky !important;
+    bottom:0 !important;
+    margin:0 !important;
+  }
+  #flightModal .form-foot .btn{
+    flex:1 1 120px !important;
+    min-width:0 !important;
+  }
 }
-@media(max-width:380px){
- #flightModal #flightForm{padding-left:12px!important;padding-right:12px!important}
- #flightModal .form-foot{margin-left:-12px!important;margin-right:-12px!important;padding-left:12px!important;padding-right:12px!important}
- #flightModal .day-times-head{align-items:flex-start}
+@media(max-width:360px){
+  #flightModal #flightForm{padding-left:9px !important;padding-right:9px !important}
+  #flightModal .time-slot{gap:5px !important}
+  #flightModal .time-slot input[type="time"]{font-size:15px !important;padding-left:3px !important;padding-right:3px !important}
 }
 
 </style>
@@ -321,31 +391,4 @@ document.getElementById('backupFile').onchange=async e=>{const file=e.target.fil
 document.getElementById('exportCsv').onclick=()=>{if(!state.flights.length){toast('Non ci sono voli da esportare');return}const rows=[['EATC','Paese','Tipologia','Dal giorno','Al giorno','Fasce orarie per giornata','Trasporto','Note'],...state.flights.map(f=>[f.eatc,f.country||'',f.type,dateIT(f.date),dateIT(f.endDate||f.date),timesLabel(f),(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(', '),f.notes])];const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='registro-voli.csv';a.click();URL.revokeObjectURL(a.href)};
 renderFlights();renderTraining();
 </script>
-
-<script>
-(() => {
-  const BUILD = '20261109-2215';
-  let checking = false;
-  async function checkForUpdate() {
-    if (checking || !navigator.onLine) return;
-    checking = true;
-    try {
-      const url = new URL(window.location.href);
-      url.searchParams.set('_flightlog_check', Date.now().toString());
-      const response = await fetch(url.toString(), {method:'GET',cache:'no-store',credentials:'same-origin'});
-      if (!response.ok) return;
-      const latestHtml = await response.text();
-      const match = latestHtml.match(/<meta\\s+name=["']flightlog-build["']\\s+content=["']([^"']+)["']/i);
-      if (match && match[1] !== BUILD) window.location.reload();
-    } catch (error) {
-      console.info('Flight Log: controllo aggiornamenti non disponibile.');
-    } finally { checking = false; }
-  }
-  window.addEventListener('pageshow', checkForUpdate);
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') checkForUpdate();
-  });
-})();
-</script>
-
 </body></html>
