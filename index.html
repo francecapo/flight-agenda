@@ -214,6 +214,71 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   #flightModal .time-slot input[type="time"]{font-size:15px !important;padding-left:3px !important;padding-right:3px !important}
 }
 
+
+/* Compattazione dei giorni e delle fasce orarie su iPhone */
+@media(max-width:800px){
+  #flightModal #flightDate,
+  #flightModal #flightEndDate{
+    height:48px !important;
+    min-height:48px !important;
+    padding:8px 10px !important;
+    font-size:15px !important;
+  }
+  #flightModal .day-times{
+    padding:9px !important;
+    margin-top:8px !important;
+    border-radius:11px !important;
+  }
+  #flightModal .day-times-head{
+    align-items:center !important;
+    gap:7px !important;
+    margin-bottom:6px !important;
+  }
+  #flightModal .day-times-head strong{
+    font-size:16px !important;
+    line-height:1.25 !important;
+    font-weight:750 !important;
+  }
+  #flightModal .day-times-head .add-slot{
+    font-size:12px !important;
+    padding:7px 9px !important;
+    min-height:36px !important;
+    white-space:nowrap !important;
+  }
+  #flightModal .time-slot{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:8px !important;
+    align-items:start !important;
+    margin-top:6px !important;
+  }
+  #flightModal .time-slot .field{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:4px !important;
+    min-width:0 !important;
+    width:100% !important;
+  }
+  #flightModal .time-slot .field label{
+    display:block !important;
+    min-width:0 !important;
+    font-size:12px !important;
+    line-height:1.2 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  #flightModal .time-slot input[type="time"]{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    height:44px !important;
+    min-height:44px !important;
+    box-sizing:border-box !important;
+    padding:7px 4px !important;
+    font-size:15px !important;
+  }
+}
+
 </style>
 </head>
 <body>
