@@ -366,6 +366,57 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   #flightModal .time-slot > span{display:none !important}
 }
 
+
+/* Date compatte: due controlli distinti, senza sovrapposizione su Safari iOS */
+@media(max-width:800px){
+  #flightModal #flightForm{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    column-gap:14px !important;
+  }
+  #flightModal #flightForm > .field:has(#flightDate),
+  #flightModal #flightForm > .field:has(#flightEndDate){
+    display:flex !important;
+    flex-direction:column !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    grid-column:span 1 !important;
+    overflow:hidden !important;
+  }
+  #flightModal #flightDate,
+  #flightModal #flightEndDate{
+    appearance:none !important;
+    -webkit-appearance:none !important;
+    display:block !important;
+    position:relative !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    inline-size:100% !important;
+    height:40px !important;
+    min-height:40px !important;
+    padding:4px 5px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    font-family:inherit !important;
+    font-size:13px !important;
+    line-height:1.2 !important;
+    text-align:center !important;
+    border-radius:10px !important;
+  }
+  #flightModal #flightDate::-webkit-date-and-time-value,
+  #flightModal #flightEndDate::-webkit-date-and-time-value{
+    text-align:center !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #flightModal #flightDate::-webkit-calendar-picker-indicator,
+  #flightModal #flightEndDate::-webkit-calendar-picker-indicator{
+    margin:0 1px 0 2px !important;
+    padding:0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
