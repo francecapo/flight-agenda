@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#101b2d">
-<meta name="flightlog-build" content="20261109-2200">
+<meta name="flightlog-build" content="20261109-2215">
 <title>Flight Log | Agenda operativa</title>
 <style>
 :root{--bg:#f3f5f8;--panel:#fff;--ink:#172235;--muted:#718096;--line:#e5eaf0;--nav:#101b2d;--blue:#2563eb;--blue2:#eaf1ff;--green:#0f8b68;--red:#c24141;--shadow:0 8px 28px rgba(22,34,53,.07);--radius:18px}
@@ -109,125 +109,39 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 @media(max-width:800px){.agenda-heading{gap:8px}.flight-alert{font-size:11px;padding:7px 9px}}
 
 
-/* Modulo Nuovo volo: ottimizzato per iPhone */
 @media(max-width:800px){
-  #flightModal.modal-backdrop{
-    align-items:flex-end !important;
-    justify-content:center !important;
-    padding:0 !important;
-    overflow:hidden !important;
-  }
-  #flightModal .modal{
-    display:flex !important;
-    flex-direction:column !important;
-    width:100% !important;
-    max-width:none !important;
-    height:auto !important;
-    max-height:calc(100dvh - env(safe-area-inset-top)) !important;
-    margin:0 !important;
-    border-radius:20px 20px 0 0 !important;
-    overflow:hidden !important;
-  }
-  #flightModal .modal-head{
-    flex:0 0 auto !important;
-    padding:14px 16px !important;
-    min-height:64px;
-  }
-  #flightModal .modal-head h3{font-size:19px !important}
-  #flightModal .close{min-width:42px;min-height:42px;font-size:18px}
-  #flightModal #flightForm{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) !important;
-    gap:12px !important;
-    padding:14px 16px calc(12px + env(safe-area-inset-bottom)) !important;
-    overflow-y:auto !important;
-    overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;
-    min-height:0 !important;
-  }
-  #flightModal #flightForm > .field,
-  #flightModal #flightForm > .field.full{
-    grid-column:1 !important;
-    min-width:0 !important;
-    width:100% !important;
-  }
-  #flightModal #flightForm .field input,
-  #flightModal #flightForm .field select,
-  #flightModal #flightForm .field textarea{
-    box-sizing:border-box !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    font-size:16px !important;
-    min-height:48px;
-  }
-  #flightModal #dailyTimes{min-width:0;width:100%}
-  #flightModal .day-times{
-    box-sizing:border-box;
-    width:100%;
-    padding:11px;
-    overflow:hidden;
-  }
-  #flightModal .day-times-head{
-    align-items:center;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  #flightModal .day-times-head strong{font-size:15px}
-  #flightModal .day-times-head .btn{padding:9px 11px;font-size:13px}
-  #flightModal .time-slot{
-    display:grid !important;
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:8px !important;
-    width:100%;
-    min-width:0;
-    align-items:end;
-  }
-  #flightModal .time-slot .field{min-width:0 !important;width:100%}
-  #flightModal .time-slot .field input{
-    width:100% !important;
-    min-width:0 !important;
-    box-sizing:border-box !important;
-  }
-  #flightModal .time-slot .remove-slot{
-    grid-column:1/-1 !important;
-    justify-self:end !important;
-    min-height:38px;
-    padding:7px 12px;
-  }
-  #flightModal .transport-options{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:8px;
-  }
-  #flightModal .transport-options label{
-    min-width:0;
-    display:flex;
-    align-items:center;
-    gap:7px;
-    padding:10px;
-    border:1px solid var(--line);
-    border-radius:10px;
-  }
-  #flightModal .form-foot{
-    position:sticky !important;
-    bottom:calc(-12px - env(safe-area-inset-bottom)) !important;
-    z-index:3;
-    grid-column:1 !important;
-    display:flex !important;
-    justify-content:stretch !important;
-    gap:8px !important;
-    margin:4px -16px calc(-12px - env(safe-area-inset-bottom)) !important;
-    padding:11px 16px calc(12px + env(safe-area-inset-bottom)) !important;
-    background:rgba(255,255,255,.97);
-    border-top:1px solid var(--line);
-  }
-  #flightModal .form-foot .btn{flex:1;min-height:48px}
+  #flightRows td.empty-cell{display:none !important}
+}
+
+
+/* Modulo Nuovo volo: layout mobile */
+@media(max-width:800px){
+ #flightModal.modal-backdrop{align-items:flex-end!important;justify-content:center!important;padding:0!important;overflow:hidden!important}
+ #flightModal .modal{display:flex!important;flex-direction:column!important;width:100%!important;max-width:none!important;height:auto!important;max-height:calc(100dvh - env(safe-area-inset-top))!important;margin:0!important;border-radius:20px 20px 0 0!important;overflow:hidden!important}
+ #flightModal .modal-head{flex:0 0 auto!important;padding:14px 16px!important;min-height:64px}
+ #flightModal .modal-head h3{font-size:19px!important}
+ #flightModal .close{min-width:42px;min-height:42px;font-size:18px}
+ #flightModal #flightForm{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;padding:14px 16px calc(12px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;min-height:0!important}
+ #flightModal #flightForm>.field,#flightModal #flightForm>.field.full{grid-column:1!important;min-width:0!important;width:100%!important}
+ #flightModal #flightForm .field input,#flightModal #flightForm .field select,#flightModal #flightForm .field textarea{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;font-size:16px!important;min-height:48px}
+ #flightModal #dailyTimes{min-width:0;width:100%}
+ #flightModal .day-times{box-sizing:border-box;width:100%;padding:11px;overflow:hidden}
+ #flightModal .day-times-head{align-items:center;flex-wrap:wrap;gap:8px}
+ #flightModal .day-times-head strong{font-size:15px}
+ #flightModal .day-times-head .btn{padding:9px 11px;font-size:13px}
+ #flightModal .time-slot{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;width:100%;min-width:0;align-items:end}
+ #flightModal .time-slot .field{min-width:0!important;width:100%}
+ #flightModal .time-slot .field input{width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ #flightModal .time-slot .remove-slot{grid-column:1/-1!important;justify-self:end!important;min-height:38px;padding:7px 12px}
+ #flightModal .transport-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #flightModal .transport-options label{min-width:0;display:flex;align-items:center;gap:7px;padding:10px;border:1px solid var(--line);border-radius:10px}
+ #flightModal .form-foot{position:sticky!important;bottom:calc(-12px - env(safe-area-inset-bottom))!important;z-index:3;grid-column:1!important;display:flex!important;justify-content:stretch!important;gap:8px!important;margin:4px -16px calc(-12px - env(safe-area-inset-bottom))!important;padding:11px 16px calc(12px + env(safe-area-inset-bottom))!important;background:rgba(255,255,255,.97);border-top:1px solid var(--line)}
+ #flightModal .form-foot .btn{flex:1;min-height:48px}
 }
 @media(max-width:380px){
-  #flightModal #flightForm{padding-left:12px !important;padding-right:12px !important}
-  #flightModal .form-foot{margin-left:-12px !important;margin-right:-12px !important;padding-left:12px !important;padding-right:12px !important}
-  #flightModal .day-times-head{align-items:flex-start}
+ #flightModal #flightForm{padding-left:12px!important;padding-right:12px!important}
+ #flightModal .form-foot{margin-left:-12px!important;margin-right:-12px!important;padding-left:12px!important;padding-right:12px!important}
+ #flightModal .day-times-head{align-items:flex-start}
 }
 
 </style>
@@ -370,7 +284,7 @@ function renderFlights(){
  renderFlightAlert();
  const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
  const list=[...state.flights].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||String(f.eatc||'').toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||String(f.type||'').toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||String(f.date||'').startsWith(yr)||String(f.endDate||f.date||'').startsWith(yr)));
- document.getElementById('flightRows').innerHTML=list.map(f=>`<tr><td class="eatc" data-label="EATC">${esc(f.eatc||"—")}</td><td data-label="Paese">${esc(f.country||"—")}</td><td data-label="Tipologia"><span class="pill ${(f.type||"").toLowerCase()}">${esc(f.type)}</span>${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td data-label="Date">${dateIT(f.date)||"—"}${(f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):''}</td><td data-label="Orari" style="white-space:normal;min-width:190px">${esc(timesLabel(f))}</td><td data-label="Trasporto">${esc((Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", ")||"—")}</td><td data-label="Azioni"><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`).join('');
+ document.getElementById('flightRows').innerHTML=list.map(f=>{const transport=(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", "),dateLabel=f.date?(dateIT(f.date)+((f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):'')):'',timeLabel=timesLabel(f)==='—'?'':timesLabel(f);return `<tr><td class="eatc ${f.eatc?'':'empty-cell'}" data-label="EATC">${esc(f.eatc||'')}</td><td class="${f.country?'':'empty-cell'}" data-label="Paese">${esc(f.country||'')}</td><td class="${f.type||f.sectionId?'':'empty-cell'}" data-label="Tipologia">${f.type?`<span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>`:''}${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td class="${dateLabel?'':'empty-cell'}" data-label="Date">${dateLabel}</td><td class="${timeLabel?'':'empty-cell'}" data-label="Orari" style="white-space:normal;min-width:190px">${esc(timeLabel)}</td><td class="${transport?'':'empty-cell'}" data-label="Trasporto">${esc(transport)}</td><td data-label="Azioni"><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`}).join('');
  document.getElementById('flightEmpty').style.display=list.length?'none':'block';document.getElementById('resultCount').textContent=`${list.length} ${list.length===1?'risultato':'risultati'}`;
  const total=state.flights.reduce((s,f)=>s+duration(f),0),year=new Date().getFullYear();
  document.getElementById('totalFlights').textContent=state.flights.length;document.getElementById('totalHours').textContent=hoursLabel(total);document.getElementById('yearFlights').textContent=state.flights.filter(f=>String(f.date||'').startsWith(String(year))).length;
@@ -410,37 +324,24 @@ renderFlights();renderTraining();
 
 <script>
 (() => {
-  const BUILD = '20261109-2200';
+  const BUILD = '20261109-2215';
   let checking = false;
-
   async function checkForUpdate() {
     if (checking || !navigator.onLine) return;
     checking = true;
     try {
       const url = new URL(window.location.href);
       url.searchParams.set('_flightlog_check', Date.now().toString());
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        cache: 'no-store',
-        credentials: 'same-origin'
-      });
+      const response = await fetch(url.toString(), {method:'GET',cache:'no-store',credentials:'same-origin'});
       if (!response.ok) return;
       const latestHtml = await response.text();
       const match = latestHtml.match(/<meta\\s+name=["']flightlog-build["']\\s+content=["']([^"']+)["']/i);
-      if (match && match[1] !== BUILD) {
-        window.location.reload();
-      }
+      if (match && match[1] !== BUILD) window.location.reload();
     } catch (error) {
-      // Offline or temporarily unreachable: keep the already loaded app usable.
       console.info('Flight Log: controllo aggiornamenti non disponibile.');
-    } finally {
-      checking = false;
-    }
+    } finally { checking = false; }
   }
-
-  window.addEventListener('pageshow', () => {
-    checkForUpdate();
-  });
+  window.addEventListener('pageshow', checkForUpdate);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') checkForUpdate();
   });
