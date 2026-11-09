@@ -76,7 +76,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 
 @media(min-width:801px) and (max-width:1100px){main{padding:24px 22px}.app{grid-template-columns:210px 1fr}.form{gap:11px}}
 
-/* Ricerca mobile: griglia 2x2 con quattro campi della stessa dimensione */
+/* Filtri: griglia 2x2, tutti i controlli con identica larghezza */
 @media(max-width:800px){
   #flightsPage .filters{
     display:grid !important;
@@ -91,16 +91,9 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
     box-sizing:border-box !important;
     width:100% !important;
     min-width:0 !important;
-    max-width:none !important;
+    max-width:100% !important;
     height:48px !important;
     margin:0 !important;
-    flex:none !important;
-  }
-  #flightsPage #filterYear{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    grid-column:auto !important;
   }
 }
 </style>
@@ -132,7 +125,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
         <input id="searchFlight" placeholder="Cerca EATC o tipologia…">
         <select id="filterType"><option value="">Tutte le tipologie</option><option>Addestrativo</option><option>Nazionale</option><option>Estero</option><option>OFCN</option></select>
         <select id="filterTransport"><option value="">Tutti i trasporti</option><option>Log Pax</option><option>Log Pall</option><option>Log Wheel</option></select>
-        <input id="filterYear" type="number" placeholder="Anno" min="2000" max="2100" style="max-width:110px">
+        <input id="filterYear" type="number" placeholder="Anno" min="2000" max="2100">
       </div>
       <div class="table-wrap"><table><thead><tr><th>EATC</th><th>Paese</th><th>Tipologia</th><th>Data</th><th>Orario</th><th>Trasporto</th><th></th></tr></thead><tbody id="flightRows"></tbody></table></div>
       <div class="empty" id="flightEmpty"><strong>Nessun volo registrato</strong>Inserisci il primo volo con il pulsante “Nuovo volo”.</div>
