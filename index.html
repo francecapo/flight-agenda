@@ -458,9 +458,29 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 #flightRows .flight-actions{position:absolute;top:7px;right:8px;display:flex;gap:6px;align-items:center}
 #flightRows .flight-actions .iconbtn{width:34px;height:34px;min-height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center}
 @media(max-width:800px){
-  #flightRows td.type-cell{grid-column:1/-1 !important;display:flex !important;align-items:flex-start;justify-content:space-between;gap:8px;padding:7px 0 9px}
-  #flightRows .type-content{padding-right:0;min-width:0}
-  #flightRows .flight-actions{position:static;flex:0 0 auto;margin-left:auto;gap:7px}
+  #flightRows td.type-cell{
+    grid-column:1/-1 !important;
+    display:block !important;
+    position:relative !important;
+    padding:7px 92px 9px 0 !important;
+    min-height:58px;
+  }
+  #flightRows .type-content{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:5px !important;
+    padding:0 !important;
+    min-width:0;
+  }
+  #flightRows .flight-actions{
+    position:absolute !important;
+    top:4px !important;
+    right:0 !important;
+    display:flex !important;
+    margin:0 !important;
+    gap:7px !important;
+  }
   #flightRows .flight-actions .iconbtn{width:34px;height:34px;min-height:34px}
 }
 
