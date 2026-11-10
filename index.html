@@ -683,6 +683,29 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Allinea ogni giornata alla relativa fascia oraria nel registro voli */
+#flightRows .flight-date-lines > div,
+#flightRows .flight-time-lines > div{
+  min-height:1.55em;
+  line-height:1.55;
+  white-space:nowrap;
+}
+@media(max-width:800px){
+  #flightRows td.flight-date-lines,
+  #flightRows td.flight-time-lines{
+    align-self:start;
+    display:block !important;
+    white-space:normal !important;
+  }
+  #flightRows .flight-date-lines > div,
+  #flightRows .flight-time-lines > div{
+    min-height:1.55em;
+    line-height:1.55;
+    margin:0;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -824,7 +847,7 @@ function renderFlights(){
  renderFlightAlert();
  const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
  const list=[...state.flights].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||String(f.eatc||'').toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||String(f.type||'').toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||String(f.date||'').startsWith(yr)||String(f.endDate||f.date||'').startsWith(yr)));
- document.getElementById('flightRows').innerHTML=list.map(f=>{const transport=(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", "),dateLabel=f.date?(dateIT(f.date)+((f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):'')):'',timeLabel=timesLabel(f)==='—'?'':timesLabel(f);const mixRelevant=['Nazionale','Estero','OFCN'].includes(f.type),mixClass=mixRelevant?(f.mixPaid?'mix-paid':'mix-unpaid'):'';return `<tr class="${mixClass}"><td class="type-cell ${f.type||f.sectionId?'':'empty-cell'}" data-label="Tipologia"><div class="type-content">${f.type?`<span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>`:''}${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</div><div class="flight-actions"><button class="iconbtn" title="Modifica" aria-label="Modifica volo" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" aria-label="Elimina volo" onclick="deleteFlight('${f.id}')">×</button></div></td><td class="eatc ${f.eatc?'':'empty-cell'}" data-label="EATC">${esc(f.eatc||'')}</td><td class="${f.country?'':'empty-cell'}" data-label="Paese">${esc(f.country||'')}</td><td class="${dateLabel?'':'empty-cell'}" data-label="Date">${dateLabel}</td><td class="${timeLabel?'':'empty-cell'}" data-label="Orari" style="white-space:normal;min-width:190px">${esc(timeLabel)}</td><td class="${transport?'':'empty-cell'}" data-label="Trasporto">${esc(transport)}</td></tr>`}).join('');
+ document.getElementById('flightRows').innerHTML=list.map(f=>{const transport=(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", "),days=dateRange(f.date||'',f.endDate||f.date||''),slots=flightSlots(f),grouped={};slots.forEach(x=>(grouped[x.date||'']??=[]).push(`${x.start||'??'}–${x.end||'??'}`));const dayKeys=days.length?days:Object.keys(grouped).sort();const dateLines=dayKeys.map(d=>`<div>${esc(dateIT(d))}</div>`).join(''),timeLines=dayKeys.map(d=>`<div>${(grouped[d]||[]).map(esc).join(', ')||'—'}</div>`).join('');const mixRelevant=['Nazionale','Estero','OFCN'].includes(f.type),mixClass=mixRelevant?(f.mixPaid?'mix-paid':'mix-unpaid'):'';return `<tr class="${mixClass}"><td class="type-cell ${f.type||f.sectionId?'':'empty-cell'}" data-label="Tipologia"><div class="type-content">${f.type?`<span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>`:''}${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</div><div class="flight-actions"><button class="iconbtn" title="Modifica" aria-label="Modifica volo" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" aria-label="Elimina volo" onclick="deleteFlight('${f.id}')">×</button></div></td><td class="eatc ${f.eatc?'':'empty-cell'}" data-label="EATC">${esc(f.eatc||'')}</td><td class="${f.country?'':'empty-cell'}" data-label="Paese">${esc(f.country||'')}</td><td class="${dateLines?'':'empty-cell'} flight-date-lines" data-label="Date">${dateLines}</td><td class="${timeLines?'':'empty-cell'} flight-time-lines" data-label="Orari" style="white-space:normal;min-width:190px">${timeLines}</td><td class="${transport?'':'empty-cell'}" data-label="Trasporto">${esc(transport)}</td></tr>`}).join('');
  document.getElementById('flightEmpty').style.display=list.length?'none':'block';document.getElementById('resultCount').textContent=`${list.length} ${list.length===1?'risultato':'risultati'}`;
  const total=state.flights.reduce((s,f)=>s+duration(f),0),year=new Date().getFullYear();
  document.getElementById('totalFlights').textContent=state.flights.length;document.getElementById('totalHours').textContent=hoursLabel(total);document.getElementById('yearFlights').textContent=state.flights.filter(f=>String(f.date||'').startsWith(String(year))).length;
