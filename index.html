@@ -571,6 +571,24 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Centra il contenuto dei campi data e orario su iPhone */
+@media(max-width:800px){
+  #flightModal #flightDate,
+  #flightModal #flightEndDate,
+  #flightModal .time-slot input[type="time"]{
+    text-align:center !important;
+    text-align-last:center !important;
+  }
+  #flightModal #flightDate::-webkit-date-and-time-value,
+  #flightModal #flightEndDate::-webkit-date-and-time-value,
+  #flightModal .time-slot input[type="time"]::-webkit-date-and-time-value{
+    text-align:center !important;
+    margin:0 auto !important;
+    padding:0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
