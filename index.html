@@ -589,6 +589,37 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Centratura verticale effettiva dei valori nativi date/time in Safari iOS */
+@media(max-width:800px){
+  #flightModal #flightDate,
+  #flightModal #flightEndDate,
+  #flightModal .time-slot input[type="time"]{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    height:44px !important;
+    min-height:44px !important;
+    max-height:44px !important;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+    line-height:44px !important;
+    box-sizing:border-box !important;
+  }
+  #flightModal #flightDate::-webkit-date-and-time-value,
+  #flightModal #flightEndDate::-webkit-date-and-time-value,
+  #flightModal .time-slot input[type="time"]::-webkit-date-and-time-value{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    height:44px !important;
+    min-height:44px !important;
+    line-height:44px !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
