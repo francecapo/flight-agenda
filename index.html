@@ -451,6 +451,19 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Azioni volo spostate in alto a destra nella scheda/riga */
+#flightRows td.type-cell{position:relative}
+#flightRows .type-content{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding-right:82px}
+#flightRows .flight-actions{position:absolute;top:7px;right:8px;display:flex;gap:6px;align-items:center}
+#flightRows .flight-actions .iconbtn{width:34px;height:34px;min-height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:800px){
+  #flightRows td.type-cell{grid-column:1/-1 !important;display:flex !important;align-items:flex-start;justify-content:space-between;gap:8px;padding:7px 0 9px}
+  #flightRows .type-content{padding-right:0;min-width:0}
+  #flightRows .flight-actions{position:static;flex:0 0 auto;margin-left:auto;gap:7px}
+  #flightRows .flight-actions .iconbtn{width:34px;height:34px;min-height:34px}
+}
+
 </style>
 </head>
 <body>
@@ -482,7 +495,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
         <select id="filterTransport"><option value="">Tutti i trasporti</option><option>Log Pax</option><option>Log Pall</option><option>Log Wheel</option></select>
         <input id="filterYear" type="number" placeholder="Anno" min="2000" max="2100">
       </div>
-      <div class="table-wrap"><table><thead><tr><th>Tipologia</th><th>EATC</th><th>Paese</th><th>Data</th><th>Orario</th><th>Trasporto</th><th></th></tr></thead><tbody id="flightRows"></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Tipologia</th><th>EATC</th><th>Paese</th><th>Data</th><th>Orario</th><th>Trasporto</th></tr></thead><tbody id="flightRows"></tbody></table></div>
       <div class="empty" id="flightEmpty"><strong>Nessun volo registrato</strong>Inserisci il primo volo con il pulsante “Nuovo volo”.</div>
     </div>
   </section>
@@ -591,7 +604,7 @@ function renderFlights(){
  renderFlightAlert();
  const q=document.getElementById('searchFlight').value.toLowerCase(),typ=document.getElementById('filterType').value,tr=document.getElementById('filterTransport').value,yr=document.getElementById('filterYear').value;
  const list=[...state.flights].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(b.start||'').localeCompare(String(a.start||''))).filter(f=>(!q||String(f.eatc||'').toLowerCase().includes(q)||(f.country||"").toLowerCase().includes(q)||String(f.type||'').toLowerCase().includes(q))&&(!typ||f.type===typ)&&(!tr||(Array.isArray(f.transport)?f.transport.includes(tr):f.transport===tr))&&(!yr||String(f.date||'').startsWith(yr)||String(f.endDate||f.date||'').startsWith(yr)));
- document.getElementById('flightRows').innerHTML=list.map(f=>{const transport=(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", "),dateLabel=f.date?(dateIT(f.date)+((f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):'')):'',timeLabel=timesLabel(f)==='—'?'':timesLabel(f);return `<tr><td class="${f.type||f.sectionId?'':'empty-cell'}" data-label="Tipologia">${f.type?`<span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>`:''}${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</td><td class="eatc ${f.eatc?'':'empty-cell'}" data-label="EATC">${esc(f.eatc||'')}</td><td class="${f.country?'':'empty-cell'}" data-label="Paese">${esc(f.country||'')}</td><td class="${dateLabel?'':'empty-cell'}" data-label="Date">${dateLabel}</td><td class="${timeLabel?'':'empty-cell'}" data-label="Orari" style="white-space:normal;min-width:190px">${esc(timeLabel)}</td><td class="${transport?'':'empty-cell'}" data-label="Trasporto">${esc(transport)}</td><td data-label="Azioni"><div class="row-actions"><button class="iconbtn" title="Modifica" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" onclick="deleteFlight('${f.id}')">×</button></div></td></tr>`}).join('');
+ document.getElementById('flightRows').innerHTML=list.map(f=>{const transport=(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(", "),dateLabel=f.date?(dateIT(f.date)+((f.endDate||f.date)!==f.date?' – '+dateIT(f.endDate):'')):'',timeLabel=timesLabel(f)==='—'?'':timesLabel(f);return `<tr><td class="type-cell ${f.type||f.sectionId?'':'empty-cell'}" data-label="Tipologia"><div class="type-content">${f.type?`<span class="pill ${f.type.toLowerCase()}">${esc(f.type)}</span>`:''}${f.sectionId?`<div class="hint">${esc(sectionName(f.sectionId))}</div>`:''}</div><div class="flight-actions"><button class="iconbtn" title="Modifica" aria-label="Modifica volo" onclick="editFlight('${f.id}')">✎</button><button class="iconbtn" title="Elimina" aria-label="Elimina volo" onclick="deleteFlight('${f.id}')">×</button></div></td><td class="eatc ${f.eatc?'':'empty-cell'}" data-label="EATC">${esc(f.eatc||'')}</td><td class="${f.country?'':'empty-cell'}" data-label="Paese">${esc(f.country||'')}</td><td class="${dateLabel?'':'empty-cell'}" data-label="Date">${dateLabel}</td><td class="${timeLabel?'':'empty-cell'}" data-label="Orari" style="white-space:normal;min-width:190px">${esc(timeLabel)}</td><td class="${transport?'':'empty-cell'}" data-label="Trasporto">${esc(transport)}</td></tr>`}).join('');
  document.getElementById('flightEmpty').style.display=list.length?'none':'block';document.getElementById('resultCount').textContent=`${list.length} ${list.length===1?'risultato':'risultati'}`;
  const total=state.flights.reduce((s,f)=>s+duration(f),0),year=new Date().getFullYear();
  document.getElementById('totalFlights').textContent=state.flights.length;document.getElementById('totalHours').textContent=hoursLabel(total);document.getElementById('yearFlights').textContent=state.flights.filter(f=>String(f.date||'').startsWith(String(year))).length;
