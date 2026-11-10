@@ -520,7 +520,7 @@ function dateIT(s){if(!s)return '';const [y,m,d]=s.split('-');return `${d}/${m}/
 function slotMinutes(slot){if(!slot.start||!slot.end)return 0;let a=slot.start.split(':').map(Number),b=slot.end.split(':').map(Number);let mins=(b[0]*60+b[1])-(a[0]*60+a[1]);if(mins<0)mins+=1440;return mins}
 function flightSlots(f){if(Array.isArray(f.dailyTimes))return f.dailyTimes.flatMap(day=>(day.slots||[]).map(slot=>({...slot,date:day.date})));return f.start&&f.end?[{date:f.date,start:f.start,end:f.end}]:[]}
 function duration(f){const slots=flightSlots(f);return slots.reduce((sum,slot)=>sum+slotMinutes(slot),0)}
-function timesLabel(f){const slots=flightSlots(f);if(!slots.length)return '—';const grouped={};slots.forEach(x=>(grouped[x.date||'']??=[]).push(`${x.start||'??'}–${x.end||'??'}`));return Object.entries(grouped).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v])=>`${dateIT(d)}: ${v.join(', ')}`).join(' · ')}
+function timesLabel(f){const slots=flightSlots(f);if(!slots.length)return '—';const grouped={};slots.forEach(x=>(grouped[x.date||'']??=[]).push(`${x.start||'??'}–${x.end||'??'}`));const entries=Object.entries(grouped).sort((a,b)=>a[0].localeCompare(b[0]));if(entries.length===1)return entries[0][1].join(', ');return entries.map(([d,v])=>`${dateIT(d)}: ${v.join(', ')}`).join(' · ')}
 function hoursLabel(min){return `${Math.floor(min/60)}h${String(min%60).padStart(2,'0')}`}
 function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 function openModal(id){document.getElementById(id).classList.add('show')}
