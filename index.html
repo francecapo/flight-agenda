@@ -501,6 +501,76 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 #flightModal .mix-paid-control{display:flex;align-items:center;gap:10px;font-weight:650}
 #flightModal .mix-paid-control input{width:20px;height:20px;accent-color:#16a34a}
 
+
+/* Riduce l'altezza dei controlli data e orario su iPhone */
+@media(max-width:800px){
+  #flightModal #flightDate,
+  #flightModal #flightEndDate{
+    -webkit-appearance:none !important;
+    appearance:none !important;
+    display:block !important;
+    width:100% !important;
+    height:44px !important;
+    min-height:0 !important;
+    max-height:44px !important;
+    padding:4px 6px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    font-size:14px !important;
+    line-height:normal !important;
+  }
+  #flightModal .day-times{
+    padding:8px !important;
+    margin-top:7px !important;
+  }
+  #flightModal .day-times-head{
+    margin-bottom:5px !important;
+    gap:6px !important;
+  }
+  #flightModal .day-times-head strong{
+    font-size:15px !important;
+    line-height:1.2 !important;
+  }
+  #flightModal .day-times-head .add-slot{
+    min-height:34px !important;
+    height:34px !important;
+    padding:5px 8px !important;
+    font-size:12px !important;
+  }
+  #flightModal .time-slot{
+    margin-top:5px !important;
+    gap:7px !important;
+    align-items:start !important;
+  }
+  #flightModal .time-slot .field{
+    display:block !important;
+    gap:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #flightModal .time-slot .field label{
+    display:block !important;
+    margin:0 0 4px !important;
+    font-size:12px !important;
+    line-height:1.2 !important;
+  }
+  #flightModal .time-slot input[type="time"]{
+    -webkit-appearance:none !important;
+    appearance:none !important;
+    display:block !important;
+    width:100% !important;
+    height:44px !important;
+    min-height:0 !important;
+    max-height:44px !important;
+    padding:4px 5px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    font-size:14px !important;
+    line-height:normal !important;
+    border-radius:10px !important;
+  }
+}
+
 </style>
 </head>
 <body>
