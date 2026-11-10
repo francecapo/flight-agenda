@@ -620,6 +620,36 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
+
+/* Checkbox trasporto compatti: la regola generale input min-height:44px li ingrandiva */
+@media(max-width:800px){
+  #flightModal .transport-options label{
+    min-height:56px !important;
+    height:56px !important;
+    padding:8px 10px !important;
+    box-sizing:border-box !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:9px !important;
+    font-size:13px !important;
+    line-height:1.2 !important;
+  }
+  #flightModal .transport-options input[type="checkbox"]{
+    -webkit-appearance:checkbox !important;
+    appearance:auto !important;
+    width:20px !important;
+    height:20px !important;
+    min-width:20px !important;
+    min-height:20px !important;
+    max-width:20px !important;
+    max-height:20px !important;
+    flex:0 0 20px !important;
+    padding:0 !important;
+    margin:0 !important;
+    box-shadow:none !important;
+  }
+}
+
 </style>
 </head>
 <body>
