@@ -500,9 +500,11 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
 }
 #flightModal .mix-paid-control{display:flex;align-items:center;gap:10px;font-weight:650}
 #flightModal .mix-paid-control input{width:20px;height:20px;accent-color:#16a34a}
-#flightModal .mix-paid-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-#flightModal .cv-number-control{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:650;color:#536176}
-#flightModal .cv-number-control input{width:105px;max-width:35vw;padding:7px 9px}
+#flightModal .mix-paid-row{display:flex;align-items:center;gap:14px;flex-wrap:nowrap;width:100%;min-width:0}
+#flightModal .mix-paid-control{flex:0 0 auto;white-space:nowrap}
+#flightModal .cv-number-control{display:flex;align-items:center;gap:7px;flex:1 1 auto;min-width:0;white-space:nowrap;font-size:13px;font-weight:650;color:#536176}
+#flightModal .cv-number-control input{width:105px;max-width:28vw;min-width:0;padding:7px 9px;flex:0 1 105px}
+@media(max-width:800px){#flightModal .mix-paid-row{gap:12px}#flightModal .cv-number-control input{width:clamp(75px,27vw,120px);max-width:27vw}}
 
 
 
