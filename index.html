@@ -868,7 +868,29 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
-\n</style>
+\n
+
+/* Tipologia missione e sezione di addestramento sulla stessa riga */
+#flightRows .type-content{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+}
+#flightRows .type-content .hint{
+  margin:0 !important;
+}
+@media(max-width:800px){
+  #flightRows .type-content{
+    flex-direction:row !important;
+    align-items:center !important;
+    flex-wrap:wrap !important;
+    gap:8px !important;
+  }
+}
+
+</style>
 
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
