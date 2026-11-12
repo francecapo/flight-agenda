@@ -844,6 +844,10 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   #flightRows td[data-label="N° CV"]{
     grid-column:2 !important;
   }
+  /* Nasconde del tutto i campi non compilati, inclusa la relativa etichetta */
+  #flightRows td.empty-cell{
+    display:none !important;
+  }
 }
 
 
