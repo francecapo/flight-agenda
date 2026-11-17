@@ -1057,13 +1057,14 @@ function setDeadlineStatus(elementId,lastDate,limit){
  const el=document.getElementById(elementId);
  if(!lastDate){el.className='flight-alert neutral';el.textContent='Nessun volo registrato';return}
  const [y,m,d]=lastDate.split('-').map(Number);
- const days=dateDifferenceDays(new Date(y,m-1,d),new Date());
- if(days<0){el.className='flight-alert neutral';el.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'}`;return}
- const remaining=limit-days;
- if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduto da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'}`}
- else if(remaining===0){el.className='flight-alert red';el.textContent='Scadenza oggi'}
- else if(remaining<=7){el.className='flight-alert orange';el.textContent=`Scade tra ${remaining} ${remaining===1?'giorno':'giorni'}`}
- else{el.className='flight-alert green';el.textContent=`In regola · ${remaining} giorni alla scadenza`}
+ const last=new Date(y,m-1,d),due=new Date(y,m-1,d);
+ due.setDate(due.getDate()+limit);
+ const days=dateDifferenceDays(last,new Date()),remaining=limit-days,dueLabel=dateIT(`${due.getFullYear()}-${String(due.getMonth()+1).padStart(2,'0')}-${String(due.getDate()).padStart(2,'0')}`);
+ if(days<0){el.className='flight-alert neutral';el.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'} · scadenza ${dueLabel}`;return}
+ if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduta il ${dueLabel} · da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'}`}
+ else if(remaining===0){el.className='flight-alert red';el.textContent=`Scadenza oggi · ${dueLabel}`}
+ else if(remaining<=7){el.className='flight-alert orange';el.textContent=`Scade tra ${remaining} ${remaining===1?'giorno':'giorni'} · il ${dueLabel}`}
+ else{el.className='flight-alert green';el.textContent=`In regola · ${remaining} giorni · scadenza ${dueLabel}`}
 }
 function renderFlightAlert(){
  const dated=state.flights.map(f=>f.endDate||f.date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(String(d||''))).sort();
