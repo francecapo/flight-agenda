@@ -913,6 +913,12 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
  #flightModal .day-transport .transport-options label{padding:7px 8px;font-size:11px}
 }
 
+
+/* Nelle mix multi-giorno si visualizzano solo le giornate effettive; le altre si aggiungono su richiesta */
+.add-day-row{display:flex;gap:8px;align-items:center;margin:8px 0 12px}
+.add-day-row select{flex:1;min-width:0}
+@media(max-width:800px){.add-day-row{align-items:stretch}.add-day-row select{width:100%}.add-day-row .btn{white-space:nowrap}}
+
 </style>
 
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -1090,16 +1096,41 @@ function toggleTransportField(){const type=document.getElementById('flightType')
 document.getElementById('flightType').addEventListener('change',toggleTransportField);
 function dateRange(start,end){const out=[];if(!start||!end||end<start)return out;let d=new Date(start+'T12:00:00'),last=new Date(end+'T12:00:00');while(d<=last&&out.length<366){out.push(d.toISOString().slice(0,10));d.setDate(d.getDate()+1)}return out}
 function renderDailyTimes(existing=[]){
- const host=document.getElementById('dailyTimes'),start=document.getElementById('flightDate').value,end=document.getElementById('flightEndDate').value,dates=dateRange(start,end),multiDay=dates.length>1,showTransport=['Nazionale','Estero','OFCN'].includes(document.getElementById('flightType').value),fallback=selectedTransports(),old={};
+ const host=document.getElementById('dailyTimes'),start=document.getElementById('flightDate').value,end=document.getElementById('flightEndDate').value,allDates=dateRange(start,end),multiDay=allDates.length>1,showTransport=['Nazionale','Estero','OFCN'].includes(document.getElementById('flightType').value),fallback=selectedTransports(),old={};
  existing.forEach(day=>old[day.date]=day);
  document.getElementById('transportField').hidden=!showTransport||multiDay;
- host.innerHTML=dates.map(date=>{
+ let visibleDates=allDates.filter(date=>{
+  const day=old[date];
+  return day&&((day.slots||[]).some(slot=>slot.start||slot.end)||(day.transport||[]).length);
+ });
+ if(!visibleDates.length&&allDates.length)visibleDates=multiDay?[allDates[0],allDates[allDates.length-1]]:[allDates[0]];
+ if(multiDay){
+  const options=allDates.filter(date=>!visibleDates.includes(date)).map(date=>`<option value="${date}">${dateIT(date)}</option>`).join('');
+  host.innerHTML=`<div class="add-day-row"><select id="addFlightDay" aria-label="Seleziona una giornata">${options||'<option value="">Tutte le giornate aggiunte</option>'}</select><button type="button" class="btn small" id="addFlightDayBtn" ${options?'':'disabled'}>＋ Aggiungi giornata</button></div>`;
+ }else host.innerHTML='';
+ host.insertAdjacentHTML('beforeend',visibleDates.map(date=>{
   const previous=old[date]||{},slots=previous.slots?.length?previous.slots:[{start:'',end:''}],chosen=Array.isArray(previous.transport)?previous.transport:fallback;
   const dayTransport=multiDay&&showTransport?`<div class="day-transport"><strong>Trasporto del giorno</strong><div class="transport-options">${['Log Pax','Log Pall','Log Wheel'].map(name=>`<label><input type="checkbox" name="transport-${date}" value="${name}" ${chosen.includes(name)?'checked':''}> ${name}</label>`).join('')}</div></div>`:'';
   return `<div class="day-times" data-day="${date}"><div class="day-times-head"><strong>${dateIT(date)}</strong><button type="button" class="btn small add-slot" data-date="${date}">＋ Aggiungi fascia</button></div>${dayTransport}<div class="slots">${slots.map((slot,i)=>slotMarkup(date,slot,i)).join('')}</div></div>`;
- }).join('');
- host.querySelectorAll('.add-slot').forEach(btn=>btn.onclick=()=>{const day=host.querySelector(`[data-day="${btn.dataset.date}"] .slots`);day.insertAdjacentHTML('beforeend',slotMarkup(btn.dataset.date,{start:'',end:''},day.children.length));bindSlotButtons(day)});
+ }).join(''));
+ const addDayBtn=document.getElementById('addFlightDayBtn');
+ if(addDayBtn)addDayBtn.onclick=()=>{
+  const select=document.getElementById('addFlightDay'),date=select.value;
+  if(!date)return;
+  const previous=old[date]||{date,slots:[{start:'',end:''}],transport:[]};
+  old[date]=previous;
+  const dayTransport=showTransport?`<div class="day-transport"><strong>Trasporto del giorno</strong><div class="transport-options">${['Log Pax','Log Pall','Log Wheel'].map(name=>`<label><input type="checkbox" name="transport-${date}" value="${name}"> ${name}</label>`).join('')}</div></div>`:'';
+  host.insertAdjacentHTML('beforeend',`<div class="day-times" data-day="${date}"><div class="day-times-head"><strong>${dateIT(date)}</strong><button type="button" class="btn small add-slot" data-date="${date}">＋ Aggiungi fascia</button></div>${dayTransport}<div class="slots">${slotMarkup(date,{start:'',end:''},0)}</div></div>`);
+  select.querySelector(`option[value="${date}"]`)?.remove();
+  if(!select.options.length){select.innerHTML='<option value="">Tutte le giornate aggiunte</option>';addDayBtn.disabled=true}
+  bindSlotButtons(host);
+  bindAddSlotButtons(host);
+ };
  bindSlotButtons(host);
+ bindAddSlotButtons(host);
+}
+function bindAddSlotButtons(host){
+ host.querySelectorAll('.add-slot').forEach(btn=>{btn.onclick=()=>{const day=host.querySelector(`[data-day="${btn.dataset.date}"] .slots`);day.insertAdjacentHTML('beforeend',slotMarkup(btn.dataset.date,{start:'',end:''},day.children.length));bindSlotButtons(day)}})
 }
 function slotMarkup(date,slot,index){return `<div class="time-slot"><div class="field"><label>Inizio ${index+1}</label><input type="time" data-date="${date}" data-part="start" value="${esc(slot.start||'')}"></div><div class="field"><label>Fine ${index+1}</label><input type="time" data-date="${date}" data-part="end" value="${esc(slot.end||'')}"></div>${index?'<button type="button" class="btn small danger remove-slot">Rimuovi</button>':'<span></span>'}</div>`}
 function bindSlotButtons(root){root.querySelectorAll('.remove-slot').forEach(btn=>btn.onclick=()=>{btn.closest('.time-slot').remove();const day=btn.closest('.day-times');day.querySelectorAll('.time-slot').forEach((row,i)=>{row.querySelectorAll('label').forEach((label,j)=>label.textContent=(j?'Fine ':'Inizio ')+(i+1))})})}
