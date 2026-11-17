@@ -1063,7 +1063,7 @@ function setDeadlineStatus(elementId,lastDate,limit){
  if(days<0){el.className='flight-alert neutral';el.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'} · scadenza ${dueLabel}`;return}
  if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduta il ${dueLabel} · da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'}`}
  else if(remaining===0){el.className='flight-alert red';el.textContent=`Scadenza oggi · ${dueLabel}`}
- else if(remaining<=7){el.className='flight-alert orange';el.textContent=`Scade tra ${remaining} ${remaining===1?'giorno':'giorni'} · il ${dueLabel}`}
+ else if(remaining<=7){el.className='flight-alert orange';el.textContent=`${remaining} ${remaining===1?'giorno':'giorni'} alla scadenza · il ${dueLabel}`}
  else{el.className='flight-alert green';el.textContent=`In regola · ${remaining} giorni · scadenza ${dueLabel}`}
 }
 function renderFlightAlert(){
