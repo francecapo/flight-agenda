@@ -890,7 +890,18 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   }
 }
 
-</style>
+
+
+.deadlines-panel{margin:0 0 18px}
+.deadlines-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:16px}
+.deadline-item{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
+.deadline-item>strong{font-size:13px;color:var(--muted);font-weight:800;letter-spacing:.04em}
+.deadline-item .flight-alert{max-width:100%;white-space:normal;border-radius:12px}
+@media(max-width:800px){
+ .deadlines-grid{grid-template-columns:1fr;gap:14px;padding:13px}
+ .deadline-item .flight-alert{font-size:11px;padding:7px 9px}
+}
+\n</style>
 
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -904,6 +915,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
   <nav class="nav">
     <button class="active" data-page="flights"><span class="ico">▤</span> Registro voli</button>
     <button data-page="training"><span class="ico">◎</span> Addestramento</button>
+    <button data-page="deadlines"><span class="ico">◷</span> Scadenze</button>
     <button data-page="backup"><span class="ico">⇧</span> Backup</button>
   </nav>
   <div class="side-note">I dati restano salvati su questo dispositivo.<br>Esporta periodicamente un backup.</div>
@@ -913,6 +925,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
     <div class="top"><div><div class="agenda-heading"><span id="flightAlert" class="flight-alert" role="status" aria-live="polite"></span></div></div>
       <div class="actions"><button class="btn primary" id="addFlight">＋ Nuovo volo</button></div>
     </div>
+
     <div class="stats">
       <div class="stat"><span>VOLI REGISTRATI</span><strong id="totalFlights">0</strong></div>
       <div class="stat"><span>ORE DI VOLO</span><strong id="totalHours">0h</strong></div>
@@ -937,6 +950,17 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
     
     <div class="training-grid" id="trainingGrid"></div>
     <div class="empty" id="trainingEmpty" hidden><strong>Nessuna sezione presente</strong>Crea una sezione per iniziare a organizzare l'addestramento.</div>
+  </section>
+  <section id="deadlinesPage" hidden>
+    <div class="top"><div><div class="eyebrow">Controllo validità</div><h2>Scadenze</h2><p class="sub">Monitoraggio delle abilitazioni ai trasporti, calcolato dall'ultimo volo registrato per ciascuna tipologia.</p></div></div>
+    <div class="panel deadlines-panel" aria-label="Scadenze trasporti">
+      <div class="panel-head"><h3>Validità trasporti</h3></div>
+      <div class="deadlines-grid">
+        <div class="deadline-item"><strong>Log Pax · 180 giorni</strong><span id="deadlineLogPax" class="flight-alert neutral" role="status" aria-live="polite"></span></div>
+        <div class="deadline-item"><strong>Log Pall · 180 giorni</strong><span id="deadlineLogPall" class="flight-alert neutral" role="status" aria-live="polite"></span></div>
+        <div class="deadline-item"><strong>Log Wheel · 180 giorni</strong><span id="deadlineLogWheel" class="flight-alert neutral" role="status" aria-live="polite"></span></div>
+      </div>
+    </div>
   </section>
   <section id="backupPage" hidden>
     <div class="top"><div><div class="eyebrow">Gestione dati</div><h2>Backup</h2><p class="sub">Esporta una copia dei tuoi dati o ripristina un backup precedente.</p></div></div>
@@ -1006,30 +1030,35 @@ function openModal(id){document.getElementById(id).classList.add('show')}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
 document.querySelectorAll('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['flights','training','backup'].forEach(page=>document.getElementById(page+'Page').hidden=b.dataset.page!==page)});
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x===b));['flights','training','deadlines','backup'].forEach(page=>document.getElementById(page+'Page').hidden=b.dataset.page!==page)});
 function sectionName(id){return state.sections.find(s=>s.id===id)?.name||''}
 
 function localDateOnly(date=new Date()){return new Date(date.getFullYear(),date.getMonth(),date.getDate())}
 function dateDifferenceDays(from,to){return Math.floor((localDateOnly(to)-localDateOnly(from))/86400000)}
+function setDeadlineStatus(elementId,lastDate,limit){
+ const el=document.getElementById(elementId);
+ if(!lastDate){el.className='flight-alert neutral';el.textContent='Nessun volo registrato';return}
+ const [y,m,d]=lastDate.split('-').map(Number);
+ const days=dateDifferenceDays(new Date(y,m-1,d),new Date());
+ if(days<0){el.className='flight-alert neutral';el.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'}`;return}
+ const remaining=limit-days;
+ if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduto da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'}`}
+ else if(remaining===0){el.className='flight-alert red';el.textContent='Scadenza oggi'}
+ else if(remaining<=7){el.className='flight-alert orange';el.textContent=`Scade tra ${remaining} ${remaining===1?'giorno':'giorni'}`}
+ else{el.className='flight-alert green';el.textContent=`In regola · ${remaining} giorni alla scadenza`}
+}
 function renderFlightAlert(){
- const alert=document.getElementById('flightAlert');
  const dated=state.flights.map(f=>f.endDate||f.date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(String(d||''))).sort();
- if(!dated.length){alert.className='flight-alert neutral';alert.textContent='Nessun volo con data';return}
- const last=dated[dated.length-1];
- const [y,m,d]=last.split('-').map(Number);
- const lastDate=new Date(y,m-1,d);
- const days=dateDifferenceDays(lastDate,new Date());
- if(days<0){alert.className='flight-alert neutral';alert.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'}`;return}
- if(days>30){
-   alert.className='flight-alert red';
-   alert.textContent=`Scadenza superata da ${days-30} ${days-30===1?'giorno':'giorni'}`;
- }else if(days>=23){
-   alert.className='flight-alert orange';
-   alert.textContent=days===30?'Scadenza oggi':`Scadenza tra ${30-days} ${30-days===1?'giorno':'giorni'}`;
- }else{
-   alert.className='flight-alert green';
-   alert.textContent=`In regola · ${30-days} giorni alla scadenza`;
- }
+ setDeadlineStatus('flightAlert',dated.length?dated[dated.length-1]:null,30);
+ const transports=[['Log Pax','deadlineLogPax'],['Log Pall','deadlineLogPall'],['Log Wheel','deadlineLogWheel']];
+ transports.forEach(([name,id])=>{
+  const dates=state.flights
+   .filter(f=>(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).includes(name))
+   .map(f=>f.endDate||f.date)
+   .filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(String(d||'')))
+   .sort();
+  setDeadlineStatus(id,dates.length?dates[dates.length-1]:null,180);
+ });
 }
 
 function renderFlights(){
