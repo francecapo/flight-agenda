@@ -1072,7 +1072,7 @@ function renderFlightAlert(){
  const transports=[['Log Pax','deadlineLogPax'],['Log Pall','deadlineLogPall'],['Log Wheel','deadlineLogWheel']];
  transports.forEach(([name,id])=>{
   const dates=state.flights.flatMap(f=>{
-   if(Array.isArray(f.dailyTimes)&&f.dailyTimes.some(day=>Array.isArray(day.transport))){
+   if(Array.isArray(f.dailyTimes)&&f.dailyTimes.some(day=>Array.isArray(day.transport)&&(day.transport||[]).length>0)){
     return f.dailyTimes.filter(day=>(day.transport||[]).includes(name)).map(day=>day.date);
    }
    return (Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).includes(name)?[f.endDate||f.date]:[];
