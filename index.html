@@ -1068,10 +1068,9 @@ function setDeadlineStatus(elementId,lastDate,limit){
   return;
  }
  if(days<0){el.className='flight-alert neutral';el.textContent=`Prossimo volo tra ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'} · scadenza ${dueLabel}`;return}
- if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduta il ${dueLabel} · da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'}`}
- else if(remaining===0){el.className='flight-alert red';el.textContent=`Scadenza oggi · ${dueLabel}`}
- else if(remaining<=7){el.className='flight-alert orange';el.textContent=`${remaining} ${remaining===1?'giorno':'giorni'} alla scadenza · il ${dueLabel}`}
- else{el.className='flight-alert green';el.textContent=`In regola · ${remaining} giorni · scadenza ${dueLabel}`}
+ if(remaining<0){el.className='flight-alert red';el.textContent=`Scaduta il ${dueLabel} (da ${Math.abs(remaining)} ${Math.abs(remaining)===1?'giorno':'giorni'})`}
+ else if(remaining===0){el.className='flight-alert red';el.textContent=`Scadi oggi · ${dueLabel}`}
+ else{el.className=remaining<=7?'flight-alert orange':'flight-alert green';el.textContent=`Scadi il ${dueLabel} (tra ${remaining} ${remaining===1?'giorno':'giorni'})`}
 }
 function renderFlightAlert(){
  const dated=state.flights.map(f=>f.endDate||f.date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(String(d||''))).sort();
