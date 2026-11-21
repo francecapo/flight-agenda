@@ -970,7 +970,7 @@ main{padding:30px clamp(18px,4vw,52px);max-width:1500px;width:100%;margin:0 auto
     <div class="empty" id="trainingEmpty" hidden><strong>Nessuna sezione presente</strong>Crea una sezione per iniziare a organizzare l'addestramento.</div>
   </section>
   <section id="deadlinesPage" hidden>
-    <div class="top"><div><div class="eyebrow">Controllo validità</div><h2>Scadenze</h2><p class="sub">Monitoraggio delle abilitazioni ai trasporti, calcolato dall'ultimo volo registrato per ciascuna tipologia.</p></div></div>
+    
     <div class="panel deadlines-panel" aria-label="Scadenze trasporti">
       <div class="panel-head"><h3>Validità trasporti</h3></div>
       <div class="deadlines-grid">
@@ -1166,4 +1166,16 @@ document.getElementById('backupFile').onchange=async e=>{const file=e.target.fil
 document.getElementById('exportCsv').onclick=()=>{if(!state.flights.length){toast('Non ci sono voli da esportare');return}const rows=[['EATC','Paese','Tipologia','Dal giorno','Al giorno','Fasce orarie per giornata','Trasporto','Note'],...state.flights.map(f=>[f.eatc,f.country||'',f.type,dateIT(f.date),dateIT(f.endDate||f.date),timesLabel(f),(Array.isArray(f.transport)?f.transport:[f.transport].filter(Boolean)).join(', '),f.notes])];const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='registro-voli.csv';a.click();URL.revokeObjectURL(a.href)};
 renderFlights();renderTraining();
 </script>
+
+<script>
+/* Abilita l'apertura offline dopo la prima visita online */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(err => {
+      console.error('Registrazione modalità offline non riuscita:', err);
+    });
+  });
+}
+</script>
+
 </body></html>
